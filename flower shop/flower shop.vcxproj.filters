@@ -18,48 +18,48 @@
     <ClCompile Include="main.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Account.cpp">
+    <ClCompile Include="Account.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Administrator.cpp">
+    <ClCompile Include="Administrator.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\authentification.cpp">
+    <ClCompile Include="authentification.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Buyer.cpp">
+    <ClCompile Include="Buyer.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Flower.cpp">
+    <ClCompile Include="Flower.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\menu_helper.cpp">
+    <ClCompile Include="menu_helper.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Seller.cpp">
+    <ClCompile Include="Seller.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Account.h">
+    <ClInclude Include="Account.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Administrator.h">
+    <ClInclude Include="Administrator.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\authentification.h">
+    <ClInclude Include="authentification.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Buyer.h">
+    <ClInclude Include="Buyer.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Flower.h">
+    <ClInclude Include="Flower.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\menu_helper.h">
+    <ClInclude Include="menu_helper.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Seller.h">
+    <ClInclude Include="Seller.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

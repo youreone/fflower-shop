@@ -8,6 +8,7 @@ using namespace std;
 
 class Account
 {
+protected:
 		string name, login, password;
 		int role;
 		bool access;

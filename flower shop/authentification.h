@@ -9,4 +9,4 @@
 using namespace std;
 
 void authentification(map <string, Account>& accounts);  //вход в систему
-void registration(map <string, Account>& accounts);      //регистрация
+void user_registration(map <string, Account>& accounts);      //регистрация

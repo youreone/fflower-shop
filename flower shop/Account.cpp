@@ -14,7 +14,7 @@ Account::Account(string name, string login, string password, int role, bool acce
 		this->name = name;
 		this->login = login;
 		this->password = password;
-		this->role = role;           //админ = 0, продавец = 1
+		this->role = role;           //админ = 0, продавец = 1, 2 = покупатель
 		this->access = access;       //false - запрещено, true - разрешено
 }
 
@@ -24,6 +24,8 @@ void Account::Edit()
 
 void Account::writeToFile()
 {
+		this->password = encryptionPassword(this->password);
+
 		ofstream out("accounts", ios::binary | ios::app);
 		out.write((char*)&this->role, sizeof(this->role));        // запись роли
 		out.write((char*)&this->access, sizeof(this->access));    // запись уровня доступа

@@ -127,23 +127,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Account.cpp" />
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Administrator.cpp" />
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\authentification.cpp" />
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Buyer.cpp" />
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Flower.cpp" />
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\menu_helper.cpp" />
-    <ClCompile Include="..\..\Курсач ООПиП\flower shop\flower shop\Seller.cpp" />
+    <ClCompile Include="Account.cpp" />
+    <ClCompile Include="Administrator.cpp" />
+    <ClCompile Include="authentification.cpp" />
+    <ClCompile Include="Buyer.cpp" />
+    <ClCompile Include="Flower.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="menu_helper.cpp" />
+    <ClCompile Include="Seller.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Account.h" />
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Administrator.h" />
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\authentification.h" />
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Buyer.h" />
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Flower.h" />
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\menu_helper.h" />
-    <ClInclude Include="..\..\Курсач ООПиП\flower shop\flower shop\Seller.h" />
+    <ClInclude Include="Account.h" />
+    <ClInclude Include="Administrator.h" />
+    <ClInclude Include="authentification.h" />
+    <ClInclude Include="Buyer.h" />
+    <ClInclude Include="Flower.h" />
+    <ClInclude Include="menu_helper.h" />
+    <ClInclude Include="Seller.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

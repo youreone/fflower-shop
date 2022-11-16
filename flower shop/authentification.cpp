@@ -53,7 +53,7 @@ void authentification(map <string, Account>& accounts)
 				}
 				if (answer == 1)
 				{
-						registration(accounts);
+						user_registration(accounts);
 				}
 				else
 						return;
@@ -94,7 +94,7 @@ void authentification(map <string, Account>& accounts)
 		}
 }
 
-void registration(map <string, Account>& accounts)
+void user_registration(map <string, Account>& accounts)
 {
 
 }
