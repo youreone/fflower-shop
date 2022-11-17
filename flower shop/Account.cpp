@@ -44,6 +44,7 @@ void Account::writeToFile()
 		out.write((char*)&len, sizeof(len));
 		out.write((char*)this->password.c_str(), len);
 
+		out.close();
 		return;
 }
 
@@ -74,4 +75,13 @@ string encryptionPassword(string password)
 				encryptedPassword += password[i] ^ i;
 
 		return encryptedPassword;
+}
+
+User::User()
+{
+		orderNumber = -1;
+}
+
+void writeToFile()
+{
 }

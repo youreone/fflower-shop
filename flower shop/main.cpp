@@ -14,6 +14,7 @@
 using namespace std;
 
 map <string, Account> readAccounts();                     //считывает данные о всех аккаунтах
+map <string, User> readUser();
 
 
 int main()
@@ -87,4 +88,10 @@ map <string, Account> readAccounts()  //считывает данные о вс�
 		in.close();
 		cout << "Считывание данных аккаунтов прошло успешно." << endl;
 		return accounts;
+}
+
+map <string, User> readUser()
+{
+		map <string, User> users;
+		return users;
 }

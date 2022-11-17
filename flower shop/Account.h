@@ -16,10 +16,18 @@ public:
 		Account();
 		Account(string name, string login, string password, int role, bool access);
 		void Edit();
-		void writeToFile();
+		virtual void writeToFile();
 		bool returnPassword(string password);
 		int returnRole();
 		bool returnAccess();
+};
+
+class User : protected Account
+{
+		int orderNumber;
+public:
+		User();
+		friend void writeToFile();
 };
 
 string encryptionPassword(string password);

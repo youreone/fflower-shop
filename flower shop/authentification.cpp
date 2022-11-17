@@ -54,6 +54,7 @@ void authentification(map <string, Account>& accounts)
 				if (answer == 1)
 				{
 						user_registration(accounts);
+						return;
 				}
 				else
 						return;
@@ -71,9 +72,6 @@ void authentification(map <string, Account>& accounts)
 										return;
 								case 1:
 										menu_seller();
-										return;
-								case 2:
-										menu_buyer();
 										return;
 								default:
 										return;
@@ -96,5 +94,54 @@ void authentification(map <string, Account>& accounts)
 
 void user_registration(map <string, Account>& accounts)
 {
+		string login, password, name;
 
+		while (true)
+		{
+				system("cls");
+				login = "";
+				password = "";
+				name = "";
+
+				cout << "------Добро пожаловать в меню регистрации------" << endl << endl;
+
+				cout << "Как вас зовут? - ";
+				getline(cin, name);
+
+				while (true)
+				{
+						login = "";
+						cout << "Придумайте логин - ";
+						getline(cin, login);
+						map <string, Account> ::iterator it;
+						it = accounts.find(login);
+						if (it != accounts.end())
+						{
+								cout << "Пользователь с таким логином уже существует. Попробуйте еще раз." << endl;
+								continue;
+						}
+						else
+								break;
+				}
+
+				while (true)
+				{
+						password = "";
+						cout << "Придумайте пароль (минимум 5 символов) - ";
+						getline(cin, password);
+						if (password.size() < 5)
+						{
+								cout << "Ваш пароль слишком короткий. \nПожалуйста, используйте не менее 5 символов." << endl;
+								continue;
+						}
+						else
+								break;
+				}
+
+				Account acc(name, login, password, 2, 0);
+				acc.writeToFile();
+				cout << "Регистрация прошла успешно.\nТеперь вы можете войти в свою учетную запись" << endl;
+				system("pause");
+				return;
+		}
 }
