@@ -25,6 +25,14 @@ void authentification(map <string, Account>& accounts)
 		while (true)
 		{
 				c = _getch();
+				if (c == 8)
+				{
+						if (password.size() == 0)
+								continue;
+						cout << "\b \b";
+						password.erase(password.size() - 1, 1);
+						continue;
+				}
 				if (c == '\r')
 						break;
 				password += c;
@@ -63,23 +71,13 @@ void authentification(map <string, Account>& accounts)
 		{
 				if (it->second.returnPassword(password))
 				{
-						if (it->second.returnAccess())
+						if (it->second.returnRole())
 						{
-								switch (it->second.returnRole())
-								{
-								case 0:
-										menu_admin(accounts);
-										return;
-								case 1:
-										menu_seller();
-										return;
-								default:
-										return;
-								}
+								menu_admin(accounts);
 						}
 						else
 						{
-								cout << "Ваш аккаунт не подтвержден.\nПожалуйста, обратитесь к администратору" << endl;
+								menu_seller();
 								return;
 						}
 				}
@@ -138,8 +136,6 @@ void user_registration(map <string, Account>& accounts)
 								break;
 				}
 
-				Account acc(name, login, password, 2, 0);
-				acc.writeToFile();
 				cout << "Регистрация прошла успешно.\nТеперь вы можете войти в свою учетную запись" << endl;
 				system("pause");
 				return;

@@ -40,8 +40,7 @@ int main()
 map <string, Account> readAccounts()  //считывает данные о всех аккаунтах
 {
 		string name, login, password;
-		int role;
-		bool access;
+		bool role;
 		map <string, Account> accounts;
 		ifstream in("accounts", ios::binary | ios::in);
 		if (!in.is_open())
@@ -58,7 +57,6 @@ map <string, Account> readAccounts()  //считывает данные о вс�
 				in.read((char*)&role, sizeof(role));     //считывание роли
 				if (in.eof())
 						break;
-				in.read((char*)&access, sizeof(access)); //считывание уровня доступа
 
 				size_t len;
 				char* buf;
@@ -81,7 +79,7 @@ map <string, Account> readAccounts()  //считывает данные о вс�
 				password = buf;                          //считывание пароля
 				delete[] buf;
 
-				Account acc(name, login, password, role, access);
+				Account acc(name, login, password, role);
 				accounts.insert(make_pair(login, acc));
 		}
 

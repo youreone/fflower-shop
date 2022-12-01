@@ -8,7 +8,7 @@ class Flower
 protected:
 		string name;
 public:
-		Flower();
+		Flower();  
 };
 
 class FlowerAdmin : protected Flower

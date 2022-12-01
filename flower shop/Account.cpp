@@ -5,17 +5,15 @@ Account::Account()
 		this->name = "";
 		this->login = "";
 		this->password = "";
-		this->role = 0;
-		this->access = false;
+		this->role = false;
 }
 
-Account::Account(string name, string login, string password, int role, bool access)
+Account::Account(string name, string login, string password, bool role)
 {
 		this->name = name;
 		this->login = login;
 		this->password = password;
-		this->role = role;           //админ = 0, продавец = 1, 2 = покупатель
-		this->access = access;       //false - запрещено, true - разрешено
+		this->role = role;           //админ = true, работник склада = false
 }
 
 void Account::Edit()
@@ -28,7 +26,6 @@ void Account::writeToFile()
 
 		ofstream out("accounts", ios::binary | ios::app);
 		out.write((char*)&this->role, sizeof(this->role));        // запись роли
-		out.write((char*)&this->access, sizeof(this->access));    // запись уровня доступа
 
 		size_t len;
 
@@ -57,14 +54,9 @@ bool Account::returnPassword(string password)
 		return false;
 }
 
-int Account::returnRole()
+bool Account::returnRole()
 {
 		return this->role;
-}
-
-bool Account::returnAccess()
-{
-		return this->access;
 }
 
 string encryptionPassword(string password)
@@ -79,7 +71,7 @@ string encryptionPassword(string password)
 
 User::User()
 {
-		orderNumber = -1;
+		
 }
 
 void writeToFile()

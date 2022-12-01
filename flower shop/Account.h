@@ -4,27 +4,26 @@
 #include <fstream>
 #include <string>
 #include <map>
+#include "Order.h"
 using namespace std;
 
 class Account
 {
 protected:
 		string name, login, password;
-		int role;
-		bool access;
+		bool role;
 public:
 		Account();
-		Account(string name, string login, string password, int role, bool access);
+		Account(string name, string login, string password, bool role);
 		void Edit();
 		virtual void writeToFile();
 		bool returnPassword(string password);
-		int returnRole();
-		bool returnAccess();
+		bool returnRole();
 };
 
 class User : protected Account
 {
-		int orderNumber;
+		Order cart;
 public:
 		User();
 		friend void writeToFile();
