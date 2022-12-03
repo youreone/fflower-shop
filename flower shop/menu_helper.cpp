@@ -8,7 +8,11 @@ int menu_helper(vector <string> menu)
 		while (true)
 		{
 				system("cls");
-				cout << menu[0] << endl << endl;
+				cout << menu[0];
+				cout.setf(ios::right);
+				cout.width(120 - menu[0].size());
+				cout << "ESC - для выхода в предыдущее меню" << endl << endl;
+				cout.unsetf(ios::right);
 				for (int i = 1; i < menu.size(); i++)
 				{
 						if (i == choice)
@@ -36,9 +40,27 @@ int menu_helper(vector <string> menu)
 						choice++;
 						continue;
 				}
+				if (c == 27)
+				{
+						return menu.size();
+				}
 				if (c == 13)
 				{
 						return choice;
 				}
 		}
+}
+
+int input()
+{
+		int n;
+		while (!(cin >> n) || (cin.peek() != '\n'))
+		{
+				cin.clear();
+				while (cin.get() != '\n');
+				cout << "Ошибка. Пожалуйста, используйте числовой ввод." << endl;
+		}
+
+		cin.ignore();
+		return n;
 }

@@ -1,20 +1,7 @@
 #include "authentification.h"
 
-int input()
-{
-		int n;
-		while (!(cin >> n) || (cin.peek() != '\n'))
-		{
-				cin.clear();
-				while (cin.get() != '\n');
-				cout << "Ошибка. Пожалуйста, используйте числовой ввод." << endl;
-		}
 
-		cin.ignore();
-		return n;
-}
-
-void authentification(map <string, Account>& accounts)
+void authentification(map <string, Account>& accounts, map <string, User>& users)
 {
 		string login, password;
 
@@ -45,27 +32,36 @@ void authentification(map <string, Account>& accounts)
 
 		if (it == accounts.end())
 		{
-				cout << "Аккаунта с таким логином нет. Желаете зарегистрироваться?" << endl;
-				int answer;
-				while (true)
+				map <string, User> ::iterator userIt;
+				userIt = users.find(login);
+				if (userIt == users.end())
 				{
-						cout << "1 - да, 2 - нет : ";
-						answer = input();
-						if (answer < 1 || answer > 2)
+						cout << "Аккаунта с таким логином нет. Желаете зарегистрироваться?" << endl;
+						int answer;
+						while (true)
 						{
-								cout << "Ошибка, попробуйте еще раз." << endl << "Желаете зарегистрироваться?" << endl;
-								continue;
+								cout << "1 - да, 2 - нет : ";
+								answer = input();
+								if (answer < 1 || answer > 2)
+								{
+										cout << "Ошибка, попробуйте еще раз." << endl << "Желаете зарегистрироваться?" << endl;
+										continue;
+								}
+								else
+										break;
+						}
+						if (answer == 1)
+						{
+								user_registration(users);
+								return;
 						}
 						else
-								break;
-				}
-				if (answer == 1)
-				{
-						user_registration(accounts);
-						return;
+								return;
 				}
 				else
-						return;
+				{
+						menu_buyer();
+				}
 		}
 		else
 		{
@@ -73,7 +69,7 @@ void authentification(map <string, Account>& accounts)
 				{
 						if (it->second.returnRole())
 						{
-								menu_admin(accounts);
+								menu_admin(accounts, users, login);
 						}
 						else
 						{
@@ -90,9 +86,9 @@ void authentification(map <string, Account>& accounts)
 		}
 }
 
-void user_registration(map <string, Account>& accounts)
+void user_registration(map <string, User>& users)
 {
-		string login, password, name;
+		string login, password, passwordCheck, name;
 
 		while (true)
 		{
@@ -100,6 +96,7 @@ void user_registration(map <string, Account>& accounts)
 				login = "";
 				password = "";
 				name = "";
+				passwordCheck = "";
 
 				cout << "------Добро пожаловать в меню регистрации------" << endl << endl;
 
@@ -111,9 +108,9 @@ void user_registration(map <string, Account>& accounts)
 						login = "";
 						cout << "Придумайте логин - ";
 						getline(cin, login);
-						map <string, Account> ::iterator it;
-						it = accounts.find(login);
-						if (it != accounts.end())
+						map <string, User> ::iterator it;
+						it = users.find(login);
+						if (it != users.end())
 						{
 								cout << "Пользователь с таким логином уже существует. Попробуйте еще раз." << endl;
 								continue;
@@ -129,14 +126,33 @@ void user_registration(map <string, Account>& accounts)
 						getline(cin, password);
 						if (password.size() < 5)
 						{
-								cout << "Ваш пароль слишком короткий. \nПожалуйста, используйте не менее 5 символов." << endl;
+								cout << "Ваш пароль слишком короткий. Попробуйте еще раз, используя минимум 5 символов." << endl;
 								continue;
 						}
 						else
 								break;
 				}
 
-				cout << "Регистрация прошла успешно.\nТеперь вы можете войти в свою учетную запись" << endl;
+				while (true)
+				{
+						passwordCheck = "";
+						cout << "Повторите пароль - ";
+						getline(cin, passwordCheck);
+						if (passwordCheck != password)
+						{
+								cout << "Пароли не совпадают. Попробуйте еще раз." << endl;
+								continue;
+						}
+						else
+								break;
+				}
+
+				User user(name, login, password, users.size() + 1);
+				ofstream out("users", ios::binary | ios::app);
+				out << user;
+				out.close();
+				users.insert(make_pair(login, user));
+				cout << "Регистрация прошла успешно.\nТеперь вы можете войти в свою учетную запись" << endl << endl;
 				system("pause");
 				return;
 		}

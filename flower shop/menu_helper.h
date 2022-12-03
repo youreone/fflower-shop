@@ -7,3 +7,4 @@
 using namespace std;
 
 int menu_helper(vector <string>);
+int input();

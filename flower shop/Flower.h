@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <fstream>
 using namespace std;
 
 class Flower
@@ -21,6 +22,9 @@ class FlowerOrder : protected Flower
 {
 		int count;
 		float price, sale;
-
+public:
+		FlowerOrder();
+		friend ofstream& operator<<(ofstream& out, const FlowerOrder& flower);
+		friend ifstream& operator>>(ifstream& in, FlowerOrder& flower);
 };
 

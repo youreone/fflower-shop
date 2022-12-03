@@ -24,13 +24,15 @@ int main()
 
 		cout << "Меню предварительной загрузки" << endl << endl;
 		map <string, Account> accounts = readAccounts();
+		map <string, User> users = readUser();
+		cout << endl;
 		system("pause");
 		system("cls");
 
 		while (true)
 		{
 				cout << "Добро пожаловать в систему" << endl << endl << "(На этом шаге вы можете безопасно закрыть программу)" << endl << endl;
-				authentification(accounts);
+				authentification(accounts, users);
 				system("cls");
 		}
 
@@ -45,7 +47,7 @@ map <string, Account> readAccounts()  //считывает данные о вс�
 		ifstream in("accounts", ios::binary | ios::in);
 		if (!in.is_open())
 		{
-				cout << "Внимание! Файл аккаунтов не доступен или удален. Будет создан новый файл" << endl;
+				cout << "Внимание! Файл аккаунтов работников недоступен или удален. Будет создан новый файл" << endl;
 				in.close();
 				ofstream out("accounts", ios::binary | ios::out);
 				out.close();
@@ -84,12 +86,74 @@ map <string, Account> readAccounts()  //считывает данные о вс�
 		}
 
 		in.close();
-		cout << "Считывание данных аккаунтов прошло успешно." << endl;
+		if (!in.bad())
+				cout << "Считывание данных аккаунтов прошло успешно." << endl;
+		else
+		{
+				cout << "Считывание данных произошло с ошибкой. Возможны проблемы со входом" << endl;
+				in.clear();
+		}
 		return accounts;
 }
 
 map <string, User> readUser()
 {
 		map <string, User> users;
+		string name, login, password;
+		int ID;
+		Order cart;
+
+		ifstream in("users", ios::binary | ios::in);
+		if (!in.is_open())
+		{
+				cout << "Внимание! Файл аккаунтов пользователей недоступен или удален. Будет создан новый файл" << endl;
+				in.close();
+				ofstream out("users", ios::binary | ios::out);
+				out.close();
+				return users;
+		}
+
+		while (!in.eof())
+		{
+				in.read((char*)&ID, sizeof(ID));     //считывание роли
+				if (in.eof())
+						break;
+
+				size_t len;
+				char* buf;
+
+				in.read((char*)&len, sizeof(len));
+				buf = new char[len];
+				in.read(buf, len);
+				name = buf;                              //считывание имени
+				delete[] buf;
+
+				in.read((char*)&len, sizeof(len));
+				buf = new char[len];
+				in.read(buf, len);
+				login = buf;                             //считывание логина
+				delete[] buf;
+
+				in.read((char*)&len, sizeof(len));
+				buf = new char[len];
+				in.read(buf, len);
+				password = buf;                          //считывание пароля
+				delete[] buf;
+
+				in >> cart;
+
+				User user(name, login, password, users.size() + 1);
+				users.insert(make_pair(login, user));
+		}
+
+		in.close();
+		if (!in.bad())
+				cout << "Считывание данных аккаунтов пользователей прошло успешно." << endl;
+		else
+		{
+				cout << "Считывание данных произошло с ошибкой. Возможны проблемы со входом" << endl;
+				in.clear();
+		}
+
 		return users;
 }
