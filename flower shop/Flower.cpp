@@ -67,6 +67,8 @@ ifstream& operator>>(ifstream& in,FlowerOrder& flower)
 ifstream& operator>>(ifstream& in, FlowerAdmin& flower)
 {
 		in.read((char*)&flower.count, sizeof(flower.count));
+		if (in.eof())
+				return in;
 		in.read((char*)&flower.price, sizeof(flower.price));
 		in.read((char*)&flower.sale, sizeof(flower.sale));
 		in.read((char*)&flower.deliveryDay, sizeof(flower.deliveryDay));

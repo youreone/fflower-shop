@@ -177,6 +177,8 @@ map<string, FlowerAdmin> readFlowers()
 		{
 				FlowerAdmin flower;
 				in >> flower;
+				if (in.eof())
+						break;
 				flowers.insert(make_pair(flower.returnName(), flower));
 		}
 
@@ -189,5 +191,5 @@ map<string, FlowerAdmin> readFlowers()
 				in.clear();
 		}
 
-		return map<string, FlowerAdmin>();
+		return flowers;
 }
