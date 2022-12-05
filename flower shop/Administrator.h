@@ -7,5 +7,7 @@
 #include "menu_helper.h"
 using namespace std;
 
-void menu_admin(map <string, Account>& accounts, map <string, User>& users, string login);
+void menu_admin(map <string, Account>& accounts, map <string, User>& users, map <string, FlowerAdmin>& flowers, string login);
 void menu_accountsManagement(map <string, Account>& accounts, string login);
+void menu_usersManagement(map<string, User>& users);
+void menu_flowerManagement(map <string, FlowerAdmin>& flowers);

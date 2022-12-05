@@ -15,7 +15,7 @@ using namespace std;
 
 map <string, Account> readAccounts();                     //считывает данные о всех аккаунтах
 map <string, User> readUser();
-
+map <string, FlowerAdmin> readFlowers();
 
 int main()
 {
@@ -25,6 +25,7 @@ int main()
 		cout << "Меню предварительной загрузки" << endl << endl;
 		map <string, Account> accounts = readAccounts();
 		map <string, User> users = readUser();
+		map <string, FlowerAdmin> flowers = readFlowers();
 		cout << endl;
 		system("pause");
 		system("cls");
@@ -32,7 +33,7 @@ int main()
 		while (true)
 		{
 				cout << "Добро пожаловать в систему" << endl << endl << "(На этом шаге вы можете безопасно закрыть программу)" << endl << endl;
-				authentification(accounts, users);
+				authentification(accounts, users, flowers);
 				system("cls");
 		}
 
@@ -156,4 +157,37 @@ map <string, User> readUser()
 		}
 
 		return users;
+}
+
+map<string, FlowerAdmin> readFlowers()
+{
+		map<string, FlowerAdmin> flowers;
+
+		ifstream in("flowers", ios::binary | ios::in);
+		if (!in.is_open())
+		{
+				cout << "Внимание! Файл сведений о товаре недоступен или удален. Будет создан новый файл" << endl;
+				in.close();
+				ofstream out("flowers", ios::binary | ios::out);
+				out.close();
+				return flowers;
+		}
+
+		while (in.peek() != in.eof())
+		{
+				FlowerAdmin flower;
+				in >> flower;
+				flowers.insert(make_pair(flower.returnName(), flower));
+		}
+
+		in.close();
+		if (!in.bad())
+				cout << "Считывание данных товаров прошло успешно." << endl;
+		else
+		{
+				cout << "Считывание данных произошло с ошибкой. Возможны проблемы с данными" << endl;
+				in.clear();
+		}
+
+		return map<string, FlowerAdmin>();
 }

@@ -2,6 +2,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <map>
 using namespace std;
 
 class Flower
@@ -14,12 +15,19 @@ public:
 
 class FlowerAdmin : protected Flower
 {
-		int deliveryDay, deliveryMonth, deliveryYear, life, pastLife, count;
+		int deliveryDay, deliveryMonth, deliveryYear, count;
 		float price, sale;
+public:
+		FlowerAdmin();
+		friend ofstream& operator<<(ofstream& out, const FlowerAdmin& flower);
+		friend ifstream& operator>>(ifstream& in, FlowerAdmin& flower);
+		string returnName();
+		friend void updateFileFlowers(map <string, FlowerAdmin>& flowers);
 };
 
 class FlowerOrder : protected Flower
 {
+		bool flag;
 		int count;
 		float price, sale;
 public:

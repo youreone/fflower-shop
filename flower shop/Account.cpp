@@ -184,7 +184,7 @@ string encryptionPassword(string password)
 		return encryptedPassword;
 }
 
-void updateFile(map<string, Account>& accounts)
+void updateFileAccounts(map<string, Account>& accounts)
 {
 		ofstream out("accounts", ios::binary | ios::trunc);
 		
@@ -195,6 +195,7 @@ void updateFile(map<string, Account>& accounts)
 		}
 
 		out.close();
+		return;
 }
 
 User::User(string FIO, string login, string password, int ID)
@@ -203,4 +204,18 @@ User::User(string FIO, string login, string password, int ID)
 		this->login = login;
 		this->password = password;
 		this->ID = ID;
+}
+
+void updateFileUsers(map<string, User>& users)
+{
+		ofstream out("users", ios::binary | ios::trunc);
+
+		for (map <string, User> ::iterator it = users.begin(); it != users.end(); it++)
+		{
+				it->second.password = encryptionPassword(it->second.password);
+				out << it->second;
+		}
+
+		out.close();
+		return;
 }

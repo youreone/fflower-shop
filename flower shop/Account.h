@@ -25,7 +25,7 @@ public:
 		bool returnRole();
 		string returnLogin();
 		friend void viewAccounts(map <string, Account>& accounts, int choice, string login);
-		friend void updateFile(map <string, Account>& accounts);
+		friend void updateFileAccounts(map <string, Account>& accounts);
 };
 
 class User
@@ -36,6 +36,8 @@ class User
 public:
 		User(string FIO, string login, string password, int ID);
 		friend ofstream& operator<<(ofstream& out, User& user);
+		friend void viewUsers(map<string, User>& users);
+		friend void updateFileUsers(map <string, User>& users);
 };
 
 string encryptionPassword(string password);

@@ -1,6 +1,6 @@
 #include "Administrator.h"
 
-void menu_admin(map <string, Account>& accounts, map <string, User>& users, string login)
+void menu_admin(map <string, Account>& accounts, map <string, User>& users, map <string, FlowerAdmin>& flowers, string login)
 {
 		vector <string> menu = { "МЕНЮ АДМИНИСТРАТОРА", 
 														 "1 - Управление учетными записями", 
@@ -18,8 +18,10 @@ void menu_admin(map <string, Account>& accounts, map <string, User>& users, stri
 						menu_accountsManagement(accounts, login);
 						break;
 				case 2:
+						menu_usersManagement(users);
 						break;
 				case 3:
+						menu_flowerManagement(flowers);
 						break;
 				case 4:
 						break;
@@ -209,7 +211,7 @@ void menu_accountsManagement(map<string, Account>& accounts, string login)
 										break;
 						}
 
-						updateFile(accounts);
+						updateFileAccounts(accounts);
 						break;
 				}
 				case 4:
@@ -239,9 +241,88 @@ void menu_accountsManagement(map<string, Account>& accounts, string login)
 								accounts.erase(it);
 								break;
 						}
-						updateFile(accounts);
+						updateFileAccounts(accounts);
 						cout << endl << "Аккаунт успешно удален." << endl << endl;
 						system("pause");
+						break;
+				}
+				default:
+						return;
+				}
+		}
+}
+
+void menu_usersManagement(map<string, User>& users)
+{
+		vector <string> menu = { "УПРАВЛЕНИЕ УЧЕТНЫМИ ЗАПИСЯМИ",
+														 "1 - Просмотр",
+														 "2 - Удаление" };
+
+		while (true)
+		{
+				int choice = menu_helper(menu);
+
+				switch (choice)
+				{
+				case 1:
+				{
+						viewUsers(users);
+						system("pause");
+						break;
+				}
+				case 2:
+				{
+						viewUsers(users);
+
+						while (true)
+						{
+								cout << endl << "Введите номер аккаунта для удаления - ";
+								int i = input();
+								if (i < 1 || i > users.size())
+								{
+										cout << "Попробуйте еще раз." << endl;
+										continue;
+								}
+								i--;
+								map <string, User> ::iterator it = users.begin();
+								advance(it, i);
+
+								users.erase(it);
+								break;
+						}
+						updateFileUsers(users);
+						cout << endl << "Аккаунт успешно удален." << endl << endl;
+						system("pause");
+						break;
+				}
+				default:
+						return;
+				}
+		}
+}
+
+void menu_flowerManagement(map<string, FlowerAdmin>& flowers)
+{
+		vector <string> menu = { "УПРАВЛЕНИЕ ТОВАРНЫМИ ЕДИНИЦАМИ",
+														 "1 - Просмотр",
+														 "2 - Добавление",
+														 "3 - Редактирование",
+														 "4 - Удаление"};
+
+		while (true)
+		{
+				int choice = menu_helper(menu);
+
+				switch (choice)
+				{
+				case 1:
+				{
+						
+						system("pause");
+						break;
+				}
+				case 2:
+				{
 						break;
 				}
 				default:
@@ -292,4 +373,33 @@ void viewAccounts(map<string, Account>& accounts, int choice, string login)
 		return;
 }
 
+void viewUsers(map<string, User>& users)
+{
+		if (users.size() == 0)
+		{
+				cout << endl << "Акканты пользователей отсутствуют в системе." << endl << endl;
+				return;
+		}
 
+		int loginSize = 6;
+		int nameSize = 5;
+		for (map <string, User> ::iterator it = users.begin(); it != users.end(); ++it)
+		{
+				loginSize = max(loginSize, it->second.login.size());
+				nameSize = max(nameSize, it->second.name.size());
+		}
+
+		cout << "|----|----------------|-" << setfill('-') << setw(nameSize) << "" << "-|-" << setfill('-') << setw(loginSize) << "" << "-|" << endl;
+		cout << "|#п/п|  Тип аккаунта  | " << setfill(' ') << setw(nameSize) << left << "Имя" << " | " << setfill(' ') << setw(loginSize) << "Логин" << " |" << endl;
+		cout << "|----|----------------|-" << setfill('-') << setw(nameSize) << "" << "-|-" << setfill('-') << setw(loginSize) << "" << "-|" << endl;
+
+		int i = 1;
+		for (map <string, User> ::iterator it = users.begin(); it != users.end(); it++)
+		{
+				cout << "| " << i++ << ". | " << setfill(' ') << " Пользователь  | " << setw(nameSize) << left << it->second.name << " | " << setw(loginSize) << it->second.login << " |" << endl;
+				cout << "|----|----------------|-" << setfill('-') << setw(nameSize) << "" << "-|-" << setfill('-') << setw(loginSize) << "" << "-|" << endl;
+				cout << setfill(' ');
+		}
+		cout << endl;
+		return;
+}
