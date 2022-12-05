@@ -1,7 +1,7 @@
 #include "authentification.h"
 
 
-void authentification(map <string, Account>& accounts, map <string, User>& users)
+void authentification(map <string, Account>& accounts, map <string, User>& users, map <string, FlowerAdmin>& flowers)
 {
 		string login, password;
 
@@ -69,7 +69,7 @@ void authentification(map <string, Account>& accounts, map <string, User>& users
 				{
 						if (it->second.returnRole())
 						{
-								menu_admin(accounts, users, login);
+								menu_admin(accounts, users, flowers, login);
 						}
 						else
 						{

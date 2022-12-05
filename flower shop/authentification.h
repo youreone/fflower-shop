@@ -9,5 +9,5 @@
 
 using namespace std;
 
-void authentification(map <string, Account>& accounts, map <string, User>& users);  //вход в систему
+void authentification(map <string, Account>& accounts, map <string, User>& users, map <string, FlowerAdmin> & flowers);  //вход в систему
 void user_registration(map <string, User>& users);      //регистрация
