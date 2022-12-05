@@ -176,9 +176,9 @@ map<string, FlowerAdmin> readFlowers()
 		while (in.peek() != in.eof())
 		{
 				FlowerAdmin flower;
-				in >> flower;
 				if (in.eof())
 						break;
+				in >> flower;
 				flowers.insert(make_pair(flower.returnName(), flower));
 		}
 
