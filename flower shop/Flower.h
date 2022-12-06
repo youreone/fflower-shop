@@ -34,5 +34,7 @@ public:
 		FlowerOrder();
 		friend ofstream& operator<<(ofstream& out, const FlowerOrder& flower);
 		friend ifstream& operator>>(ifstream& in, FlowerOrder& flower);
+		string returnName();
+		void setFlag(bool fl);
 };
 

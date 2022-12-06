@@ -13,6 +13,16 @@ FlowerOrder::FlowerOrder()
 		this->flag = true;
 }
 
+string FlowerOrder::returnName()
+{
+		return this->name;
+}
+
+void FlowerOrder::setFlag(bool fl)
+{
+		this->flag = fl;
+}
+
 ofstream& operator<<(ofstream& out, const FlowerOrder& flower)
 {
 		out.write((char*)&flower.count, sizeof(flower.count));

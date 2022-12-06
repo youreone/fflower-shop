@@ -38,6 +38,7 @@ public:
 		friend ofstream& operator<<(ofstream& out, User& user);
 		friend void viewUsers(map<string, User>& users);
 		friend void updateFileUsers(map <string, User>& users);
+		friend void updateUserCart(map<string, User>& users, map <string, FlowerAdmin>& flowers);
 };
 
 string encryptionPassword(string password);

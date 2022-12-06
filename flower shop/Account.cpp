@@ -219,3 +219,11 @@ void updateFileUsers(map<string, User>& users)
 		out.close();
 		return;
 }
+
+void updateUserCart(map<string, User>& users, map<string, FlowerAdmin>& flowers)
+{
+		for (map <string, User>::iterator it = users.begin(); it != users.end(); it++)
+		{
+				it->second.cart.updateFlag(flowers);
+		}
+}

@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <fstream>
+#include <map>
 #include "Flower.h"
 using namespace std;
 
@@ -14,5 +15,6 @@ public:
 		Order();
 		friend ofstream& operator<<(ofstream& out, const Order& order);
 		friend ifstream& operator>>(ifstream& in, Order& order);
+		void updateFlag(map <string, FlowerAdmin>& flowers);
 };
 

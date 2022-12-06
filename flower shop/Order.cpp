@@ -2,6 +2,22 @@
 
 Order::Order()
 {
+		this->saleFull = 0;
+		this->ID = 0;
+		this->summaFull = 0;
+		this->cart = {};
+}
+
+void Order::updateFlag(map <string, FlowerAdmin>& flowers)
+{
+		map <string, FlowerAdmin>::iterator it;
+
+		for (int i = 0; i < cart.size(); i++)
+		{
+				it = flowers.find(cart[i].returnName());
+				if (it == flowers.end())
+						cart[i].setFlag(false);
+		}
 }
 
 ofstream& operator<<(ofstream& out, const Order& order)
