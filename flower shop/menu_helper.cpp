@@ -64,3 +64,27 @@ int input()
 		cin.ignore();
 		return n;
 }
+
+void returnTime(int& day, int& month, int& year)
+{
+		time_t now = time(0);
+		tm* ltm = localtime(&now);
+
+		year = 1900 + ltm->tm_year;
+		month = 1 + ltm->tm_mon;
+		day = ltm->tm_mday;
+}
+
+float floatInput()
+{
+		float n;
+		while (!(cin >> n) || (cin.peek() != '\n'))
+		{
+				cin.clear();
+				while (cin.get() != '\n');
+				cout << "Ошибка. Пожалуйста, используйте числовой ввод." << endl;
+		}
+
+		cin.ignore();
+		return n;
+}

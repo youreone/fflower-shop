@@ -18,3 +18,8 @@ public:
 		void updateFlag(map <string, FlowerAdmin>& flowers);
 };
 
+class Check : public Order
+{
+
+};
+

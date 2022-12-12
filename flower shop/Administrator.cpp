@@ -323,6 +323,7 @@ void menu_flowerManagement(map<string, FlowerAdmin>& flowers)
 				}
 				case 2:
 				{
+						addFlower(flowers);
 						break;
 				}
 				default:
@@ -425,8 +426,177 @@ void viewFlowers(map<string, FlowerAdmin>& flowers)
 		int i = 1;
 		for (map <string, FlowerAdmin>::iterator it = flowers.begin(); it != flowers.end(); it++)
 		{
-				cout << "| " << i++ << ". | " << setw(nameSize) << left << it->second.name << " | " << setw(9) << it->second.count << " | " << setw(9) << right << setprecision(2) << it->second.price << " | " << setw(5) << (int)(it->second.sale * 100) << "% |  " << setfill('0') << setw(2) << right << it->second.deliveryDay << '.' << setw(2) << it->second.deliveryMonth << '.' << setw(4) << it->second.deliveryYear << "  |" << setfill(' ') << left << endl;
-				cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|-----------|--------|--------------|" << endl << setfill(' ') << endl;
+				cout << "| " << i++ << ". | " << setw(nameSize) << left << it->second.name << " | " << setw(9) << it->second.count << " | " << setw(9) << right << fixed << setprecision(2) << it->second.price << " | " << setw(5) << (int)(it->second.sale * 100) << "% |  " << setfill('0') << setw(2) << right << it->second.deliveryDay << '.' << setw(2) << it->second.deliveryMonth << '.' << setw(4) << it->second.deliveryYear << "  |" << setfill(' ') << left << endl;
+				cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|-----------|--------|--------------|" << setfill(' ') << endl;
 		}
 		return;
+}
+
+void addFlower(map<string, FlowerAdmin>& flowers)
+{
+		vector <string> menu = { "УПРАВЛЕНИЕ ЗАКАЗА",
+														 "1 - Заказ уже существующего товара",
+														 "2 - Заказ нового товара" };
+		bool flag = true;
+
+		while (true)
+		{
+				int choice = menu_helper(menu);
+
+				switch (choice)
+				{
+				case 1:
+				{
+						viewFlowers(flowers);
+
+						cout << endl;
+
+						int i;
+						while (true)
+						{
+								cout << "Введите номер товара для добавления - ";
+								i = input();
+
+								if (i < 1 || i > flowers.size())
+								{
+										cout << "ОШИБКА. Введите действительное число нумерации товара." << endl;
+										continue;
+								}
+								else
+								{
+										i--;
+										break;
+								}
+						}
+
+						map <string, FlowerAdmin> ::iterator it = flowers.begin();
+						advance(it, i);
+						system("cls");
+						cout << "Вы пополняете этот товар:" << endl << endl << it->second << endl;
+
+						int count;
+						while (true)
+						{
+								cout << "Сколько товара вы хотите заказать? - ";
+								count = input();
+								if (count <= 0)
+								{
+										cout << "ОШИБКА. Введите целое неотрицательно число сколько вы хотите заказать." << endl << endl;
+										continue;
+								}
+								
+								break;
+						}
+
+						while (true)
+						{
+								cout << "По какой цене вы заказали? - ";
+								float price = floatInput();
+								if (price <= 0)
+								{
+										cout << "ОШИБКА. Введите целое положительное число" << endl << endl;
+										continue;
+								}
+								if (price >= 1000000)
+								{
+										cout << "ОШИБКА. Слишком большая цена (максимум - 999999.99" << endl << endl;
+										continue;
+								}
+
+								int day, month, year;
+								returnTime(day, month, year);
+								it->second.request(count, day, month, year);
+								updateFileFlowers(flowers);
+								cout << endl << it->second << endl << "Количество товара успешно пополнено." << endl << endl;
+								it->second.updateExpensesFile(count, price);
+								system("pause");
+								break;
+						}
+
+						break;
+				}
+				
+				case 2:
+				{
+						string name;
+						cout << endl << "Введите название товара - ";
+						getline(cin, name);
+						if (name[0] >= 'a' && name[0] <= 'z')
+								name[0] = name[0] + ('Z' - 'z');
+						if (name[0] >= 'а' && name[0] <= 'я')
+								name[0] = name[0] + ('Я' - 'я');
+
+						map <string, FlowerAdmin>::iterator it = flowers.find(name);
+						if (it != flowers.end())
+						{
+								cout << endl << "Такой товар присутствует в системе. Пожалуйста, используйте меню заказа уже существующих товаров" << endl << endl;
+								system("pause");
+								break;
+						}
+
+						int count;
+						while (true)
+						{
+								cout << "Сколько товара вы хотите заказать? - ";
+								count = input();
+								if (count <= 0)
+								{
+										cout << "ОШИБКА. Введите целое неотрицательно число сколько вы хотите заказать." << endl << endl;
+										continue;
+								}
+
+								break;
+						}
+
+						float price;
+						while (true)
+						{
+								cout << "По какой цене вы заказали? - ";
+								price = floatInput();
+								if (price <= 0)
+								{
+										cout << "ОШИБКА. Введите целое положительное число" << endl << endl;
+										continue;
+								}
+								if (price >= 1000000)
+								{
+										cout << "ОШИБКА. Слишком большая цена (максимум - 999999.99" << endl << endl;
+										continue;
+								}
+								break;
+						}
+
+						float sale;
+						while (true)
+						{
+								cout << "Какую скидку вы хотите выставить на товар? - ";
+								int s = input();
+								if (s < 0 ||  s > 100)
+								{
+										cout << "ОШИБКА. Скидка может быть от 0 до 100%" << endl << endl;
+										continue;
+								}
+
+								sale = s / 100.f;
+								break;
+						}
+
+						int day, month, year;
+						returnTime(day, month, year);
+						FlowerAdmin flower(name, count, price + price * 0.4, sale, day, month, year);
+						flowers.insert(make_pair(name, flower));
+						ofstream out("flowers", ios::binary | ios::app);
+						out << flower;
+						out.close();
+						flower.updateExpensesFile(count, price);
+						cout << "Товар успешно добавлен" << endl << endl << flower << endl;
+						system("pause");
+						break;
+				}
+
+				default:
+						return;
+				}
+		}
+
 }

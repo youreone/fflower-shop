@@ -102,6 +102,18 @@ ifstream& operator>>(ifstream& in, FlowerAdmin& flower)
 		return in;
 }
 
+ostream& operator<<(ostream& ostream, const FlowerAdmin& flower)
+{
+		ostream << "|-" << setfill('-') << setw(flower.name.size()) << "" << "-|-----------|-----------|--------|--------------|" << endl << setfill(' ');
+		ostream << "| " << setw(flower.name.size()) << "Название" << " | На складе | Стоимость | Скидка | Дата привоза |" << endl;
+		ostream << "|-" << setfill('-') << setw(flower.name.size()) << "" << "-|-----------|-----------|--------|--------------|" << endl << setfill(' ');
+
+		ostream << "| " << setw(flower.name.size()) << left << flower.name << " | " << setw(9) << flower.count << " | " << setw(9) << right << fixed << setprecision(2) << flower.price << " | " << setw(5) << (int)(flower.sale * 100) << "% |  " << setfill('0') << setw(2) << right << flower.deliveryDay << '.' << setw(2) << flower.deliveryMonth << '.' << setw(4) << flower.deliveryYear << "  |" << setfill(' ') << left << endl;
+		ostream << "|-" << setfill('-') << setw(flower.name.size()) << "" << "-|-----------|-----------|--------|--------------|" << endl << setfill(' ') << endl;
+		
+		return ostream;
+}
+
 void updateFileFlowers(map<string, FlowerAdmin>& flowers)
 {
 		ofstream out("flowers", ios::binary | ios::trunc);
@@ -145,4 +157,28 @@ string FlowerAdmin::returnName()
 int FlowerAdmin::returnCount()
 {
 	return this->count;
+}
+
+void FlowerAdmin::request(int count, int day, int month, int year)
+{
+		this->count += count;
+		this->deliveryDay = day;
+		this->deliveryMonth = month;
+		this->deliveryYear = year;
+}
+
+void FlowerAdmin::updateExpensesFile(int count, float price)
+{
+		ofstream out("expenses", ios::binary | ios::app);
+
+		out.write((char*)&count, sizeof(count));
+		out.write((char*)&price, sizeof(price));
+
+		size_t len;
+
+		len = this->name.length() + 1;                            // запись имени
+		out.write((char*)&len, sizeof(len));
+		out.write((char*)this->name.c_str(), len);
+
+		out.close();
 }
