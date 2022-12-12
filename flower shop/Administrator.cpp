@@ -317,7 +317,7 @@ void menu_flowerManagement(map<string, FlowerAdmin>& flowers)
 				{
 				case 1:
 				{
-						
+						viewFlowers(flowers);
 						system("pause");
 						break;
 				}
@@ -401,5 +401,32 @@ void viewUsers(map<string, User>& users)
 				cout << setfill(' ');
 		}
 		cout << endl;
+		return;
+}
+
+void viewFlowers(map<string, FlowerAdmin>& flowers)
+{
+		if (flowers.size() == 0)
+		{
+				cout << endl << "Данные о товарах отсутствуют в системе." << endl << endl;
+				return;
+		}
+
+		int nameSize = 8;
+		for (map <string, FlowerAdmin>::iterator it = flowers.begin(); it != flowers.end(); it++)
+		{
+				nameSize = max(nameSize, it->second.name.size());
+		}
+
+		cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|-----------|--------|--------------|" << endl << setfill(' ');
+		cout << "|    | " << setw(nameSize) << "Название" <<         " | На складе | Стоимость | Скидка | Дата привоза |" << endl;
+		cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|-----------|--------|--------------|" << endl << setfill(' ');
+
+		int i = 1;
+		for (map <string, FlowerAdmin>::iterator it = flowers.begin(); it != flowers.end(); it++)
+		{
+				cout << "| " << i++ << ". | " << setw(nameSize) << left << it->second.name << " | " << setw(9) << it->second.count << " | " << setw(9) << right << setprecision(2) << it->second.price << " | " << setw(5) << (int)(it->second.sale * 100) << "% |  " << setfill('0') << setw(2) << right << it->second.deliveryDay << '.' << setw(2) << it->second.deliveryMonth << '.' << setw(4) << it->second.deliveryYear << "  |" << setfill(' ') << left << endl;
+				cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|-----------|--------|--------------|" << endl << setfill(' ') << endl;
+		}
 		return;
 }

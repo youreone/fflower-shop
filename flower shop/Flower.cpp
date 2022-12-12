@@ -23,6 +23,11 @@ void FlowerOrder::setFlag(bool fl)
 		this->flag = fl;
 }
 
+int FlowerOrder::returnCount()
+{
+		return this->count;
+}
+
 ofstream& operator<<(ofstream& out, const FlowerOrder& flower)
 {
 		out.write((char*)&flower.count, sizeof(flower.count));
@@ -121,7 +126,23 @@ FlowerAdmin::FlowerAdmin()
 		this->deliveryYear = 1970;
 }
 
+FlowerAdmin::FlowerAdmin(string name, int count, float price, float sale, int day, int month, int year)
+{
+		this->name = name;
+		this->count = count;
+		this->price = price;
+		this->sale = sale;
+		this->deliveryDay = day;
+		this->deliveryMonth = month;
+		this->deliveryYear = year;
+}
+
 string FlowerAdmin::returnName()
 {
 		return this->name;
+}
+
+int FlowerAdmin::returnCount()
+{
+	return this->count;
 }

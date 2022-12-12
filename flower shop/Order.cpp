@@ -16,6 +16,10 @@ void Order::updateFlag(map <string, FlowerAdmin>& flowers)
 		{
 				it = flowers.find(cart[i].returnName());
 				if (it == flowers.end())
+				{
+						cart[i].setFlag(false);
+				}
+				else if (it->second.returnCount() < cart[i].returnCount())
 						cart[i].setFlag(false);
 		}
 }

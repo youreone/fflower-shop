@@ -19,10 +19,13 @@ class FlowerAdmin : protected Flower
 		float price, sale;
 public:
 		FlowerAdmin();
+		FlowerAdmin(string name, int count, float price, float sale, int day, int month, int year);
 		friend ofstream& operator<<(ofstream& out, const FlowerAdmin& flower);
 		friend ifstream& operator>>(ifstream& in, FlowerAdmin& flower);
 		string returnName();
 		friend void updateFileFlowers(map <string, FlowerAdmin>& flowers);
+		friend void viewFlowers(map <string, FlowerAdmin>& flowers);
+		int returnCount();
 };
 
 class FlowerOrder : protected Flower
@@ -36,5 +39,6 @@ public:
 		friend ifstream& operator>>(ifstream& in, FlowerOrder& flower);
 		string returnName();
 		void setFlag(bool fl);
+		int returnCount();
 };
 
