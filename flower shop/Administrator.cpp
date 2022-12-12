@@ -326,6 +326,78 @@ void menu_flowerManagement(map<string, FlowerAdmin>& flowers)
 						addFlower(flowers);
 						break;
 				}
+
+				case 3:
+				{
+						viewFlowers(flowers);
+						cout << endl;
+
+						int i;
+						while (true)
+						{
+								cout << "Введите номер товара для редактирования - ";
+								i = input();
+
+								if (i < 1 || i > flowers.size())
+								{
+										cout << "ОШИБКА. Введите действительное число нумерации товара." << endl;
+										continue;
+								}
+								else
+								{
+										i--;
+										break;
+								}
+						}
+
+						map <string, FlowerAdmin> ::iterator it = flowers.begin();
+						advance(it, i);
+						string newName;
+						newName = Editflower(flowers, it);
+						if (it->first != newName)
+						{
+								FlowerAdmin flower;
+								flower = it->second;
+								flowers.erase(it);
+								flowers.insert(make_pair(flower.returnName(), flower));
+						}
+
+						updateFileFlowers(flowers);
+						break;
+				}
+
+				case 4:
+				{
+						viewFlowers(flowers);
+						cout << endl;
+
+						int i;
+						while (true)
+						{
+								cout << "Введите номер товара для удаления - ";
+								i = input();
+
+								if (i < 1 || i > flowers.size())
+								{
+										cout << "ОШИБКА. Введите действительное число нумерации товара." << endl;
+										continue;
+								}
+								else
+								{
+										i--;
+										break;
+								}
+						}
+
+						map <string, FlowerAdmin> ::iterator it = flowers.begin();
+						advance(it, i);
+						flowers.erase(it);
+						updateFileFlowers(flowers);
+						cout << endl << "Товар успешно удален" << endl << endl;
+						system("pause");
+						break;
+				}
+
 				default:
 						return;
 				}
@@ -432,6 +504,96 @@ void viewFlowers(map<string, FlowerAdmin>& flowers)
 		return;
 }
 
+string Editflower(map<string, FlowerAdmin>& flowers, map<string, FlowerAdmin>::iterator flowerIt)
+{
+		vector <string> menu = { "Что вы хотите отредактировать?",
+														 "1 - Название",
+														 "2 - Цену",
+														 "3 - Скидку" };
+
+		while (true)
+		{
+				int choice = menu_helper(menu);
+				cout << "Вы редактируете этот товар: " << endl << endl << flowerIt->second << endl;
+
+				switch (choice)
+				{
+				case 1:
+				{
+						while (true)
+						{
+								string name;
+								cout << "Введите новое название - ";
+								getline(cin, name);
+
+								map <string, FlowerAdmin>::iterator it = flowers.find(name);
+								if (it != flowers.end())
+								{
+										cout << "Такое название уже есть. Попробуйте еще раз" << endl;
+										continue;
+								}
+								flowerIt->second.name = name;
+								break;
+						}
+						cout << endl << "Теперь этот товар выглядит так: " << endl << endl << flowerIt->second << endl;
+						cout << "Выйдите из меню редактирования для сохранения изменений" << endl << endl;
+						system("pause");
+						break;
+				}
+
+				case 2:
+				{
+						while (true)
+						{
+								float price;
+								cout << "Введите новую цену - ";
+								price = floatInput();
+								if (price <= 0)
+								{
+										cout << "ОШИБКА. Введите целое положительное число" << endl << endl;
+										continue;
+								}
+								if (price >= 1000000)
+								{
+										cout << "ОШИБКА. Слишком большая цена (максимум - 999999.99)" << endl << endl;
+										continue;
+								}
+								flowerIt->second.price = price;
+								break;
+						}
+						cout << endl << "Теперь этот товар выглядит так: " << endl << endl << flowerIt->second << endl;
+						cout << "Выйдите из меню редактирования для сохранения изменений" << endl << endl;
+						system("pause");
+						break;
+				}
+
+				case 3:
+				{
+						while (true)
+						{
+								cout << "Какую скидку вы хотите выставить на товар? - ";
+								int s = input();
+								if (s < 0 || s > 100)
+								{
+										cout << "ОШИБКА. Скидка может быть от 0 до 100%" << endl << endl;
+										continue;
+								}
+
+								flowerIt->second.sale = s / 100.f;
+								break;
+						}
+						cout << endl << "Теперь этот товар выглядит так: " << endl << endl << flowerIt->second << endl;
+						cout << "Выйдите из меню редактирования для сохранения изменений" << endl << endl;
+						system("pause");
+						break;
+				}
+
+				default:
+						return flowerIt->second.name;
+				}
+		}
+}
+
 void addFlower(map<string, FlowerAdmin>& flowers)
 {
 		vector <string> menu = { "УПРАВЛЕНИЕ ЗАКАЗА",
@@ -499,7 +661,7 @@ void addFlower(map<string, FlowerAdmin>& flowers)
 								}
 								if (price >= 1000000)
 								{
-										cout << "ОШИБКА. Слишком большая цена (максимум - 999999.99" << endl << endl;
+										cout << "ОШИБКА. Слишком большая цена (максимум - 999999.99)" << endl << endl;
 										continue;
 								}
 
@@ -560,7 +722,7 @@ void addFlower(map<string, FlowerAdmin>& flowers)
 								}
 								if (price >= 1000000)
 								{
-										cout << "ОШИБКА. Слишком большая цена (максимум - 999999.99" << endl << endl;
+										cout << "ОШИБКА. Слишком большая цена (максимум - 999999.99)" << endl << endl;
 										continue;
 								}
 								break;

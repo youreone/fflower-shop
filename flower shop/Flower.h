@@ -30,6 +30,7 @@ public:
 		int returnCount();
 		void request(int count, int day, int month, int year);
 		void updateExpensesFile(int count, float price);
+		friend string Editflower(map <string, FlowerAdmin>& flowers, map <string, FlowerAdmin>::iterator flowerIt);
 };
 
 class FlowerOrder : protected Flower
