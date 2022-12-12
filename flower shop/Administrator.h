@@ -11,3 +11,4 @@ void menu_admin(map <string, Account>& accounts, map <string, User>& users, map 
 void menu_accountsManagement(map <string, Account>& accounts, string login);
 void menu_usersManagement(map<string, User>& users);
 void menu_flowerManagement(map <string, FlowerAdmin>& flowers);
+void addFlower(map <string, FlowerAdmin>& flowers);

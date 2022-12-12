@@ -26,6 +26,7 @@ int main()
 		map <string, Account> accounts = readAccounts();
 		map <string, User> users = readUser();
 		map <string, FlowerAdmin> flowers = readFlowers();
+		updateUserCart(users, flowers);
 		cout << endl;
 		system("pause");
 		system("cls");
