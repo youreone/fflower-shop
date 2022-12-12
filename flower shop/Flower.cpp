@@ -149,6 +149,19 @@ FlowerAdmin::FlowerAdmin(string name, int count, float price, float sale, int da
 		this->deliveryYear = year;
 }
 
+FlowerAdmin FlowerAdmin::operator=(FlowerAdmin flower)
+{
+		string name = flower.name;
+		int count = flower.count;
+		float price = flower.price;
+		float sale = flower.sale;
+		int day = flower.deliveryDay;
+		int month = flower.deliveryMonth;
+		int year = flower.deliveryYear;
+
+		return FlowerAdmin(name, count, price, sale, day, month, year);
+}
+
 string FlowerAdmin::returnName()
 {
 		return this->name;
@@ -181,4 +194,85 @@ void FlowerAdmin::updateExpensesFile(int count, float price)
 		out.write((char*)this->name.c_str(), len);
 
 		out.close();
+}
+
+string FlowerAdmin::Edit(map<string, FlowerAdmin>& flowers)
+{
+		vector <string> menu = { "Что вы хотите отредактировать?",
+														 "1 - Название",
+														 "2 - Цену",
+														 "3 - Скидку"};
+
+		while (true)
+		{
+				int choice = menu_helper(menu);
+				cout << "Вы редактируете этот товар: " << endl << endl << *this << endl;
+
+				switch (choice)
+				{
+				case 1:
+				{
+						while (true)
+						{
+								string name;
+								cout << "Введите новое название - ";
+								getline(cin, name);
+
+								map <string, FlowerAdmin>::iterator it = flowers.find(name);
+								if (it != flowers.end())
+								{
+										cout << "Такое название уже есть. Попробуйте еще раз" << endl;
+										continue;
+								}
+								this->name = name;
+								break;
+						}
+						break;
+				}
+
+				case 2:
+				{
+						while (true)
+						{
+								float price;
+								cout << "Введите новую цену - ";
+								price = floatInput();
+								if (price <= 0)
+								{
+										cout << "ОШИБКА. Введите целое положительное число" << endl << endl;
+										continue;
+								}
+								if (price >= 1000000)
+								{
+										cout << "ОШИБКА. Слишком большая цена (максимум - 999999.99" << endl << endl;
+										continue;
+								}
+								this->price = price;
+								break;
+						}
+						break;
+				}
+
+				case 3:
+				{
+						while (true)
+						{
+								cout << "Какую скидку вы хотите выставить на товар? - ";
+								int s = input();
+								if (s < 0 || s > 100)
+								{
+										cout << "ОШИБКА. Скидка может быть от 0 до 100%" << endl << endl;
+										continue;
+								}
+
+								this->sale = s / 100.f;
+								break;
+						}
+						break;
+				}
+
+				default:
+						return this->name;
+				}
+		}
 }

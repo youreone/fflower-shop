@@ -4,6 +4,7 @@
 #include <fstream>
 #include <map>
 #include <iomanip>
+#include "menu_helper.h"
 using namespace std;
 
 class Flower
@@ -24,12 +25,14 @@ public:
 		friend ofstream& operator<<(ofstream& out, const FlowerAdmin& flower);
 		friend ifstream& operator>>(ifstream& in, FlowerAdmin& flower);
 		friend ostream& operator<<(ostream& ostream, const FlowerAdmin& flower);
+		FlowerAdmin operator=(FlowerAdmin flower);
 		string returnName();
 		friend void updateFileFlowers(map <string, FlowerAdmin>& flowers);
 		friend void viewFlowers(map <string, FlowerAdmin>& flowers);
 		int returnCount();
 		void request(int count, int day, int month, int year);
 		void updateExpensesFile(int count, float price);
+		string Edit(map <string, FlowerAdmin>& flowers);
 };
 
 class FlowerOrder : protected Flower

@@ -305,9 +305,9 @@ void menu_flowerManagement(map<string, FlowerAdmin>& flowers)
 {
 		vector <string> menu = { "УПРАВЛЕНИЕ ТОВАРНЫМИ ЕДИНИЦАМИ",
 														 "1 - Просмотр",
-														 "2 - Добавление",
+														 "2 - Заказ",
 														 "3 - Редактирование",
-														 "4 - Удаление"};
+														 "4 - Удаление" };
 
 		while (true)
 		{
@@ -324,6 +324,51 @@ void menu_flowerManagement(map<string, FlowerAdmin>& flowers)
 				case 2:
 				{
 						addFlower(flowers);
+						break;
+				}
+
+				case 3:
+				{
+						viewFlowers(flowers);
+						cout << endl;
+
+						int i;
+						while (true)
+						{
+								cout << "Введите номер товара для добавления - ";
+								i = input();
+
+								if (i < 1 || i > flowers.size())
+								{
+										cout << "ОШИБКА. Введите действительное число нумерации товара." << endl;
+										continue;
+								}
+								else
+								{
+										i--;
+										break;
+								}
+						}
+
+						map <string, FlowerAdmin> ::iterator it = flowers.begin();
+						advance(it, i);
+						string newName;
+						newName = it->second.Edit(flowers);
+						if (it->first != newName)
+						{
+								FlowerAdmin flower;
+								flower = it->second;
+								flowers.erase(it);
+								flowers.insert(make_pair(flower.returnName(), flower));
+						}
+
+						updateFileFlowers(flowers);
+						break;
+				}
+
+				case 4:
+				{
+						viewFlowers(flowers);
 						break;
 				}
 				default:
@@ -434,7 +479,7 @@ void viewFlowers(map<string, FlowerAdmin>& flowers)
 
 void addFlower(map<string, FlowerAdmin>& flowers)
 {
-		vector <string> menu = { "УПРАВЛЕНИЕ ЗАКАЗА",
+		vector <string> menu = { "УПРАВЛЕНИЕ ЗАКАЗАМИ",
 														 "1 - Заказ уже существующего товара",
 														 "2 - Заказ нового товара" };
 		bool flag = true;
