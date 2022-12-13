@@ -40,6 +40,7 @@ public:
 		friend void updateFileUsers(map <string, User>& users);
 		friend void updateUserCart(map<string, User>& users, map <string, FlowerAdmin>& flowers);
 		Order& returnCart();
+		friend void myOrders(User& user);
 };
 
 string encryptionPassword(string password);

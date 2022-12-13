@@ -56,6 +56,8 @@ ofstream& operator<<(ofstream& out, const Order& order)
 ifstream& operator>>(ifstream& in, Order& order)
 {
 		in.read((char*)&order.ID, sizeof(order.ID));
+		if (in.eof())
+				return in;
 		in.read((char*)&order.summaFull, sizeof(order.summaFull));
 		in.read((char*)&order.saleFull, sizeof(order.saleFull));
 		
@@ -77,7 +79,6 @@ void workCart(Order& Cart)
 		if (Cart.cart.size() == 0)
 		{
 				cout << endl << "Корзина пока пуста. Но вы можете добавить товары в соответствующем меню." << endl << endl;
-				system("pause");
 				return;
 		}
 		int nameSize = 8;
@@ -137,24 +138,38 @@ void workCart(Order& Cart)
 				{
 				case 1:
 				{
-						Check check;
-						ofstream out("check", ios::binary | ios::app);
+						vector <Check> checks;
+
+						ifstream in("checks", ios::binary);
+						if (!in.is_open())
+						{
+								in.close();
+								ofstream out("cheks", ios::binary);
+								out.close();
+								ifstream in("checks", ios::binary);
+						}
+						else
+								while (true)
+								{
+										Check check;
+										in >> check;
+										if (in.eof())
+												break;
+										checks.push_back(check);
+								}
+						in.close();
+
+						Check check(Cart.cart, Cart.summaFull, Cart.saleFull, checks.size(), false);
+						ofstream out("checks", ios::binary | ios::app);
 						out << check;
 						out.close();
 						cout << endl << "Заказ успешно оформлен!" << endl << endl;
-						system("pause");
 						break;
 				}
 				default:
 						return;
 				}
 		}
-}
-
-void myOrders(Order& Cart)
-{
-
-
 }
 
 ofstream& operator<<(ofstream& out, const Check& check)
@@ -181,6 +196,8 @@ ofstream& operator<<(ofstream& out, const Check& check)
 ifstream& operator>>(ifstream& in, Check& check)
 {
 		in.read((char*)&check.ID, sizeof(check.ID));
+		if (in.eof())
+				return in;
 		in.read((char*)&check.summaFull, sizeof(check.summaFull));
 		in.read((char*)&check.saleFull, sizeof(check.saleFull));
 		in.read((char*)&check.day, sizeof(check.day));
@@ -215,4 +232,61 @@ Check::Check(vector<FlowerOrder> cart, float summaFull, float saleFull, int ID, 
 		this->ID = ID;
 		returnTime(this->day, this->month, this->year);
 		this->purchase = purchase;
+}
+
+bool Check::returnPurchase()
+{
+		return this->purchase;
+}
+
+int Check::returnID()
+{
+		return this->ID;
+}
+
+void checkOut(Check& check)
+{
+		int nameSize;
+		for (int i = 0; i < check.cart.size(); i++)
+		{
+				nameSize = max(nameSize, (int)(check.cart[i].name.size()));
+				check.summaFull += check.cart[i].price * check.cart[i].count;
+				check.saleFull += check.cart[i].price * check.cart[i].count * check.cart[i].sale;
+		}
+
+		cout << setfill('#') << setw(79 + nameSize) << "" << setfill(' ');
+		cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|------------|---------------|-----------------|" << setfill(' ');
+		cout << "|    | " << setw(nameSize) << "Название" << " | Стоимость | Количество | Скидка (руб.) | Цена со скидкой |";
+		cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|------------|---------------|-----------------|" << setfill(' ');
+
+		for (int i = 0; i < check.cart.size(); i++)
+		{
+				cout << "| " << i + 1 << ". | " << setfill('-') << setw(nameSize) << check.cart[i].name << " | "
+						<< fixed << setprecision(2) << setw(6) << check.cart[i].price << " | "
+						<< setw(10) << check.cart[i].count << " | "
+						<< fixed << setprecision(2) << setw(13) << check.cart[i].price * check.cart[i].count * check.cart[i].sale << " | "
+						<< fixed << setprecision(2) << setw(15) << check.cart[i].price * check.cart[i].count - check.cart[i].price * check.cart[i].count * check.cart[i].sale << " |";
+				cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|------------|---------------|-----------------|" << setfill(' ');
+		}
+
+		cout << endl;
+		cout << "| Позиций";
+		cout.setf(ios::right);
+		cout.width(67 + nameSize);
+		cout << check.cart.size() << " |";
+		cout.unsetf(ios::right);
+
+		cout << "| Скидка";
+		cout.setf(ios::right);
+		cout.width(68 + nameSize);
+		cout << check.saleFull << " |";
+		cout.unsetf(ios::right);
+
+		cout << "| Итого к оплате";
+		cout.setf(ios::right);
+		cout.width(60 + nameSize);
+		cout << check.summaFull << " |";
+		cout.unsetf(ios::right);
+		
+		cout << setfill('#') << setw(79 + nameSize) << "" << setfill(' ');
 }

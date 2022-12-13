@@ -19,7 +19,7 @@ public:
 		friend ifstream& operator>>(ifstream& in, Order& order);
 		void updateFlag(map <string, FlowerAdmin>& flowers);
 		friend void workCart(Order& cart);
-		friend void myOrders(Order& cart);
+		friend void myOrders(User& user);
 };
 
 class Check : public Order
@@ -31,5 +31,8 @@ public:
 		Check(vector <FlowerOrder> cart, float summaFull, float saleFull, int ID, bool purchase);
 		friend ofstream& operator<<(ofstream& out, const Check& check);
 		friend ifstream& operator>>(ifstream& in, Check& check);
+		bool returnPurchase();
+		int returnID();
+		friend void checkOut(Check& check);
 };
 
