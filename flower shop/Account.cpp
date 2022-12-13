@@ -206,6 +206,11 @@ User::User(string FIO, string login, string password, int ID)
 		this->ID = ID;
 }
 
+Order& User::returnCart()
+{
+	return this->cart;
+}
+
 void updateFileUsers(map<string, User>& users)
 {
 		ofstream out("users", ios::binary | ios::trunc);

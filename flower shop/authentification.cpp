@@ -60,7 +60,7 @@ void authentification(map <string, Account>& accounts, map <string, User>& users
 				}
 				else
 				{
-						menu_buyer();
+						menu_buyer(userIt->second);
 				}
 		}
 		else

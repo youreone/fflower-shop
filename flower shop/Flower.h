@@ -6,6 +6,7 @@
 #include <iomanip>
 using namespace std;
 
+class Order;
 class Flower
 {
 protected:
@@ -45,5 +46,7 @@ public:
 		string returnName();
 		void setFlag(bool fl);
 		int returnCount();
+		friend void workCart(Order& cart);
+		friend void myOrders(Order& cart);
 };
 

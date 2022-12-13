@@ -4,5 +4,5 @@
 #include "menu_helper.h"
 using namespace std;
 
-void menu_buyer();
+void menu_buyer(User user);
 
