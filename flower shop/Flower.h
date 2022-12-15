@@ -6,6 +6,9 @@
 #include <iomanip>
 using namespace std;
 
+class User;
+class Order;
+class Check;
 class Flower
 {
 protected:
@@ -31,6 +34,7 @@ public:
 		void request(int count, int day, int month, int year);
 		void updateExpensesFile(int count, float price);
 		friend string Editflower(map <string, FlowerAdmin>& flowers, map <string, FlowerAdmin>::iterator flowerIt);
+		friend void topUpShoppingCart(map <string, FlowerAdmin>& flowers, User& user);
 };
 
 class FlowerOrder : protected Flower
@@ -40,10 +44,14 @@ class FlowerOrder : protected Flower
 		float price, sale;
 public:
 		FlowerOrder();
+		FlowerOrder(string name, bool flag, int count, float price, float sale);
 		friend ofstream& operator<<(ofstream& out, const FlowerOrder& flower);
 		friend ifstream& operator>>(ifstream& in, FlowerOrder& flower);
 		string returnName();
 		void setFlag(bool fl);
 		int returnCount();
+		friend void workCart(Order& cart, int ID);
+		friend void myOrders(User& user);
+		friend void checkOut(Check& check);
 };
 

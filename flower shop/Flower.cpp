@@ -28,6 +28,15 @@ int FlowerOrder::returnCount()
 		return this->count;
 }
 
+FlowerOrder::FlowerOrder(string name, bool flag, int count, float price, float sale)
+{
+		this->name = name;
+		this->count = count;
+		this->flag = flag;
+		this->price = price;
+		this->sale = sale;
+}
+
 ofstream& operator<<(ofstream& out, const FlowerOrder& flower)
 {
 		out.write((char*)&flower.count, sizeof(flower.count));
