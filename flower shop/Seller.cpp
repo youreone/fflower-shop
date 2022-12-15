@@ -89,6 +89,11 @@ void menu_seller(map <string, FlowerAdmin>& flowers)
 						shared_ptr <Check> ptr(new Check);
 						*ptr = checks[ch];
 						checks[ch] = placeOrder(ptr, flowers);
+						if (checks[ch].returnPurchase())
+						{
+								checksFull.push_back(checks[ch]);
+								checks.erase(checks.begin() + ch);
+						}
 						updateFileChecks(checks, checksFull);
 						system("pause");
 						break;

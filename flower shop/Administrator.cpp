@@ -898,9 +898,9 @@ void Stat()
 				nameSize = max(nameSize, it->second.name.size());
 		}
 
-		cout << "|-" << setfill('-') << setw(nameSize) << "" << " |------------|-------------|" << setfill(' ') << endl;
+		cout << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
 		cout << "| " << setw(nameSize) << "Название" <<         " |   Расход   |   Приход    |" << endl;
-		cout << "|-" << setfill('-') << setw(nameSize) << "" << " |------------|-------------|" << setfill(' ') << endl;
+		cout << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
 
 
 		for (map <string, Flow>::iterator it = flowers.begin(); it != flowers.end(); ++it)
@@ -923,7 +923,7 @@ void Stat()
 		for (map <string, Flow>::iterator it = flowers.begin(); it != flowers.end(); ++it)
 		{
 				out << "| " << setw(nameSize) << it->second.name << " | " << fixed << setprecision(2) << setw(10) << it->second.expenses << " | " << fixed << setprecision(2) << setw(11) << it->second.parishes << " |" << endl;
-				out << "|-" << setfill('-') << setw(nameSize) << "" << " |------------|-------------|" << setfill(' ') << endl;
+				out << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
 		}
 		out << endl << "Вы заработали " << fullParishes << "р." << endl;
 		out << "Вы потратили " << Fullexpenses << "р." << endl;
