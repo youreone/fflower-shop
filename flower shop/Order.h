@@ -37,6 +37,6 @@ public:
 		int returnID();
 		friend void checkOut(Check& check, int number);
 		friend Check placeOrder(shared_ptr <Check> ptr, map <string, FlowerAdmin>& flowers);
-		
+		friend void Stat();
 };
 

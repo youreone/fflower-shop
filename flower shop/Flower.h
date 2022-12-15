@@ -14,7 +14,7 @@ class Flower
 protected:
 		string name;
 public:
-		Flower();  
+		string virtual returnName() = 0;
 };
 
 class FlowerAdmin : protected Flower
@@ -60,5 +60,6 @@ public:
 		friend void myOrders(User& user);
 		friend void checkOut(Check& check, int number);
 		friend Check placeOrder(shared_ptr <Check> ptr, map <string, FlowerAdmin>& flowers);
+		friend void Stat();
 };
 

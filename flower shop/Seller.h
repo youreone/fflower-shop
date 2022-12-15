@@ -6,4 +6,4 @@
 using namespace std;
 
 void menu_seller(map <string, FlowerAdmin>& flowers);
-void updateFileChecks(vector <Check>& check);
+void updateFileChecks(vector <Check>& check, vector<Check>& checksFull);

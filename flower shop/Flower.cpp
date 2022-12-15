@@ -1,9 +1,5 @@
 #include "Flower.h"
 
-Flower::Flower()
-{
-}
-
 FlowerOrder::FlowerOrder()
 {
 		this->name = "";

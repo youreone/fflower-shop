@@ -2,15 +2,7 @@
 #include "Order.h"
 void returnTime(int& day, int& month, int& year);
 int input();
-//void ReturnTime(int& day, int& month, int& year)
-//{
-//		time_t now = time(0);
-//		tm* ltm = localtime(&now);
-//
-//		year = 1900 + ltm->tm_year;
-//		month = 1 + ltm->tm_mon;
-//		day = ltm->tm_mday;
-//}
+
 
 Order::Order()
 {

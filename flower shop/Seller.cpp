@@ -8,6 +8,7 @@ void menu_seller(map <string, FlowerAdmin>& flowers)
 														 "3 - Выход" };
 
 		vector <Check> checks;
+		vector <Check> checksFull;
 		ifstream in("checks", ios::binary);
 		if (!in.is_open())
 		{
@@ -25,6 +26,8 @@ void menu_seller(map <string, FlowerAdmin>& flowers)
 						break;
 				if (!check.returnPurchase())
 						checks.push_back(check);
+				else
+						checksFull.push_back(check);
 		}
 		in.close();
 
@@ -86,7 +89,7 @@ void menu_seller(map <string, FlowerAdmin>& flowers)
 						shared_ptr <Check> ptr(new Check);
 						*ptr = checks[ch];
 						checks[ch] = placeOrder(ptr, flowers);
-						updateFileChecks(checks);
+						updateFileChecks(checks, checksFull);
 						system("pause");
 						break;
 				}
@@ -96,11 +99,13 @@ void menu_seller(map <string, FlowerAdmin>& flowers)
 		}
 }
 
-void updateFileChecks(vector<Check>& checks)
+void updateFileChecks(vector<Check>& checks, vector<Check>& checksFull)
 {
 		ofstream out("checks", ios::binary | ios::trunc);
 		for (int i = 0; i < checks.size(); i++)
 				out << checks[i];
+		for (int i = 0; i < checksFull.size(); i++)
+				out << checksFull[i];
 		out.close();
 		return;
 }
