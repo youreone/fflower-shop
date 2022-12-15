@@ -144,7 +144,7 @@ map <string, User> readUser()
 
 				in >> cart;
 
-				User user(name, login, password, users.size() + 1);
+				User user(name, login, password, users.size() + 1, cart);
 				users.insert(make_pair(login, user));
 		}
 

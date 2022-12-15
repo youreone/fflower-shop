@@ -198,17 +198,23 @@ void updateFileAccounts(map<string, Account>& accounts)
 		return;
 }
 
-User::User(string FIO, string login, string password, int ID)
+User::User(string FIO, string login, string password, int ID, Order cart)
 {
 		this->name = FIO;
 		this->login = login;
 		this->password = password;
 		this->ID = ID;
+		this->cart = cart;
 }
 
 Order& User::returnCart()
 {
 	return this->cart;
+}
+
+int User::returnID()
+{
+		return this->ID;
 }
 
 void updateFileUsers(map<string, User>& users)

@@ -34,13 +34,16 @@ class User
 		Order cart;
 		int ID;
 public:
-		User(string FIO, string login, string password, int ID);
+		User(string FIO, string login, string password, int ID, Order cart);
 		friend ofstream& operator<<(ofstream& out, User& user);
 		friend void viewUsers(map<string, User>& users);
 		friend void updateFileUsers(map <string, User>& users);
 		friend void updateUserCart(map<string, User>& users, map <string, FlowerAdmin>& flowers);
 		Order& returnCart();
 		friend void myOrders(User& user);
+		friend void topUpShoppingCart(map <string, FlowerAdmin>& flowers, User& user);
+		friend void deleteCart(User& user);
+		int returnID();
 };
 
 string encryptionPassword(string password);

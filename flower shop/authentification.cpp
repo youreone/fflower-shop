@@ -60,7 +60,7 @@ void authentification(map <string, Account>& accounts, map <string, User>& users
 				}
 				else
 				{
-						menu_buyer(userIt->second, flowers);
+						menu_buyer(userIt->second, flowers, users);
 				}
 		}
 		else
@@ -147,7 +147,8 @@ void user_registration(map <string, User>& users)
 								break;
 				}
 
-				User user(name, login, password, users.size() + 1);
+				Order cart;
+				User user(name, login, password, users.size(), cart);
 				ofstream out("users", ios::binary | ios::app);
 				out << user;
 				out.close();

@@ -18,8 +18,10 @@ public:
 		friend ofstream& operator<<(ofstream& out, const Order& order);
 		friend ifstream& operator>>(ifstream& in, Order& order);
 		void updateFlag(map <string, FlowerAdmin>& flowers);
-		friend void workCart(Order& cart);
+		friend void workCart(Order& cart, int ID);
 		friend void myOrders(User& user);
+		friend void topUpShoppingCart(map <string, FlowerAdmin>& flowers, User& user);
+		friend void deleteCart(User& user);
 };
 
 class Check : public Order
