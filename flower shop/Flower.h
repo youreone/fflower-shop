@@ -35,6 +35,12 @@ public:
 		void updateExpensesFile(int count, float price);
 		friend string Editflower(map <string, FlowerAdmin>& flowers, map <string, FlowerAdmin>::iterator flowerIt);
 		friend void topUpShoppingCart(map <string, FlowerAdmin>& flowers, User& user);
+		friend void viewFlowersWithSort (map <string, FlowerAdmin> flowers);
+		friend void viewVector(vector <FlowerAdmin> flowers);
+		friend bool compName(FlowerAdmin a, FlowerAdmin b);
+		friend bool compPrice(FlowerAdmin a, FlowerAdmin b);
+		friend bool compSale(FlowerAdmin a, FlowerAdmin b);
+		friend Check placeOrder(shared_ptr <Check> ptr, map <string, FlowerAdmin>& flowers);
 };
 
 class FlowerOrder : protected Flower
@@ -52,6 +58,7 @@ public:
 		int returnCount();
 		friend void workCart(Order& cart, int ID);
 		friend void myOrders(User& user);
-		friend void checkOut(Check& check);
+		friend void checkOut(Check& check, int number);
+		friend Check placeOrder(shared_ptr <Check> ptr, map <string, FlowerAdmin>& flowers);
 };
 

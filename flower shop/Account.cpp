@@ -38,7 +38,11 @@ string Account::Edit(map <string, Account>& accounts)
 								name = "";
 								cout << "Введите ФИО (не более 50 символов) - ";
 								getline(cin, name);
-
+								if (name.size() == 0)
+								{
+										cout << "Имя не может быть пустым. Повторите попытку" << endl;
+										continue;
+								}
 								if (name.size() > 50)
 								{
 										cout << "Имя слишком длинное. Пожалуйста, используйте не более 50 символов." << endl;
@@ -61,6 +65,11 @@ string Account::Edit(map <string, Account>& accounts)
 								login = "";
 								cout << "Введите логин (не более 20 символов) - ";
 								getline(cin, login);
+								if (login.size() == 0)
+								{
+										cout << "Логин не может быть пустым. Повторите попытку" << endl;
+										continue;
+								}
 
 								map <string, Account> ::iterator it;
 								it = accounts.find(login);

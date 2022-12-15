@@ -90,7 +90,11 @@ void menu_accountsManagement(map<string, Account>& accounts, string login)
 										name = "";
 										cout << "Введите ФИО (не более 50 символов) - ";
 										getline(cin, name);
-
+										if (name.size() == 0)
+										{
+												cout << "Имя не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
 										if (name.size() > 50)
 										{
 												cout << "Имя работника слишком длинное. Пожалуйста, используйте не более 50 символов." << endl;
@@ -105,7 +109,11 @@ void menu_accountsManagement(map<string, Account>& accounts, string login)
 										login = "";
 										cout << "Введите логин (не более 20 символов) - ";
 										getline(cin, login);
-
+										if (login.size() == 0)
+										{
+												cout << "Логин не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
 										map <string, Account> ::iterator it;
 										it = accounts.find(login);
 										if (it != accounts.end())
@@ -125,6 +133,11 @@ void menu_accountsManagement(map<string, Account>& accounts, string login)
 										password = "";
 										cout << "Введите пароль (минимум 5 символов) - ";
 										getline(cin, password);
+										if (password.size() == 0)
+										{
+												cout << "Пароль не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
 										if (password.size() < 5)
 										{
 												cout << "Ваш пароль слишком короткий. Попробуйте еще раз, используя минимум 5 символов." << endl;
@@ -523,8 +536,22 @@ string Editflower(map<string, FlowerAdmin>& flowers, map<string, FlowerAdmin>::i
 						while (true)
 						{
 								string name;
-								cout << "Введите новое название - ";
-								getline(cin, name);
+								while(true)
+								{
+										cout << "Введите новое название - ";
+										getline(cin, name);
+										if (name.size() == 0)
+										{
+												cout << "Название не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
+										if (name.size() == 0)
+										{
+												cout << "Название не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
+										break;
+								}
 
 								map <string, FlowerAdmin>::iterator it = flowers.find(name);
 								if (it != flowers.end())
@@ -681,8 +708,17 @@ void addFlower(map<string, FlowerAdmin>& flowers)
 				case 2:
 				{
 						string name;
-						cout << endl << "Введите название товара - ";
-						getline(cin, name);
+						while(true)
+						{
+								cout << endl << "Введите название товара - ";
+								getline(cin, name);
+								if (name.size() == 0)
+								{
+										cout << "Название не может быть пустым. Повторите попытку" << endl;
+										continue;
+								}
+								break;
+						}
 						if (name[0] >= 'a' && name[0] <= 'z')
 								name[0] = name[0] + ('Z' - 'z');
 						if (name[0] >= 'а' && name[0] <= 'я')

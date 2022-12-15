@@ -1,16 +1,41 @@
 #include "Buyer.h"
 #include "Order.h"
+#include "search.cpp"
+
+bool compName(FlowerAdmin a, FlowerAdmin b)
+{
+				return a.name < b.name;
+}
+
+bool compPrice(FlowerAdmin a, FlowerAdmin b)
+{
+		if (a.price != b.price)
+				return a.price < b.price;
+		else
+				return a.name < b.name;
+}
+
+bool compSale(FlowerAdmin a, FlowerAdmin b)
+{
+		if (a.sale != b.sale)
+				return a.sale < b.sale;
+		else if (a.price != b.price)
+				return a.price < b.price;
+		else
+				return a.name < b.name;
+}
 
 void myOrders(User& user);
 
 void menu_buyer(User& user, map <string, FlowerAdmin>& flowers, map <string, User>& users)
 {
 		vector <string> menu = { "МЕНЮ ПОКУПАТЕЛЯ",
-														 "1 - Корзина",
+														 "1 - Просто посмотреть товары",
 														 "2 - Мои заказы",
-														 "3 - Пополнить корзину",
-														 "4 - Очистить корзину",
-														 "5 - Выход" };
+														 "3 - Корзина",
+														 "4 - Пополнить корзину",
+														 "5 - Очистить корзину",
+														 "6 - Выход" };
 
 		while (true)
 		{
@@ -20,8 +45,7 @@ void menu_buyer(User& user, map <string, FlowerAdmin>& flowers, map <string, Use
 				{
 				case 1:
 				{
-						workCart(user.returnCart(), user.returnID());
-						updateFileUsers(users);
+						viewFlowersWithSort(flowers);
 						system("pause");
 						break;
 				}
@@ -35,7 +59,7 @@ void menu_buyer(User& user, map <string, FlowerAdmin>& flowers, map <string, Use
 
 				case 3:
 				{
-						topUpShoppingCart(flowers, user);
+						workCart(user.returnCart(), user.returnID());
 						updateFileUsers(users);
 						system("pause");
 						break;
@@ -43,12 +67,20 @@ void menu_buyer(User& user, map <string, FlowerAdmin>& flowers, map <string, Use
 
 				case 4:
 				{
-						deleteCart(user);
+						topUpShoppingCart(flowers, user);
+						updateFileUsers(users);
 						system("pause");
 						break;
 				}
 
 				case 5:
+				{
+						deleteCart(user);
+						system("pause");
+						break;
+				}
+
+				case 6:
 						return;
 				default:
 				{
@@ -101,7 +133,7 @@ void myOrders(User& user)
 						{
 								cout << "Этот заказ еще в обработке: " << endl;
 						}
-						checkOut(checks[i]);
+						checkOut(checks[i], i + 1);
 						flag = true;
 						cout << endl;
 				}
@@ -202,4 +234,212 @@ void deleteCart(User& user)
 		user.cart.cart.clear();
 		cout << endl << "Ваша корзина очищена" << endl << endl;
 		return;
+}
+
+void viewVector(vector <FlowerAdmin> flowers)
+{
+		if (flowers.size() == 0)
+		{
+				cout << endl << "По вашему запросу ничего не найдено." << endl << endl;
+				return;
+		}
+
+		int nameSize = 8;
+		for (int i = 0; i < flowers.size(); i++)
+		{
+				nameSize = max(nameSize, flowers[i].name.size());
+		}
+
+		cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|-----------|--------|--------------|" << endl << setfill(' ');
+		cout << "|    | " << setw(nameSize) << "Название" << " | На складе | Стоимость | Скидка | Дата привоза |" << endl;
+		cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|-----------|--------|--------------|" << endl << setfill(' ');
+
+		int k = 1;
+		for (int i = 0; i < flowers.size(); i++)
+		{
+				cout << "| " << k++ << ". | " << setw(nameSize) << left << flowers[i].name << " | " << setw(9) << flowers[i].count << " | " << setw(9) << right << fixed << setprecision(2) << flowers[i].price << " | " << setw(5) << (int)(flowers[i].sale * 100) << "% |  " << setfill('0') << setw(2) << right << flowers[i].deliveryDay << '.' << setw(2) << flowers[i].deliveryMonth << '.' << setw(4) << flowers[i].deliveryYear << "  |" << setfill(' ') << left << endl;
+				cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|-----------|--------|--------------|" << setfill(' ') << endl;
+		}
+		return;
+}
+
+void viewFlowersWithSort(map <string, FlowerAdmin> fl)
+{
+		vector <FlowerAdmin> flowers;
+		for (map <string, FlowerAdmin>::iterator it = fl.begin(); it != fl.end(); ++it)
+		{
+				flowers.push_back(it->second);
+		}
+
+		vector <string> menu = { "МЕНЮ ПРОСМОТРА",
+														 "1 - Все",
+														 "2 - Сортировка",
+														 "3 - Поиск",
+														 "4 - Фильтр"};
+
+		while (true)
+		{
+				int choice = menu_helper(menu);
+
+				switch (choice)
+				{
+				case 1:
+						viewFlowers(fl);
+						system("pause");
+						break;
+
+				case 2:
+				{
+						vector <string> menuSort = { "МЕНЮ СОРТИРОВКИ",
+														 "1 - По названию",
+														 "2 - По цене",
+														 "3 - По скидке" };
+						bool fl = true;
+						while (fl)
+						{
+								fl = true;
+								int ch = menu_helper(menuSort);
+
+								switch (ch)
+								{
+								case 1:
+										sort(flowers.begin(), flowers.end(), compName);
+										viewVector(flowers);
+										system("pause");
+										break;
+
+								case 2:
+										sort(flowers.begin(), flowers.end(), compPrice);
+										viewVector(flowers);
+										system("pause");
+										break;
+								case 3:
+										sort(flowers.begin(), flowers.end(), compSale);
+										viewVector(flowers);
+										system("pause");
+										break;
+								default:
+										fl = false;
+								}
+						}
+						break;
+				}
+
+				case 3:
+				{
+						vector <FlowerAdmin> flowerSearch;
+						string s;
+						while (true)
+						{
+								cout << "Введите искомое название - ";
+								getline(cin, s);
+								if (s.size() == 0)
+								{
+										cout << "Название не может быть пустым." << endl << endl;
+										continue;
+								}
+								break;
+						}
+
+						s = Search::search <string>::toLower(s);
+						for (int i = 0; i < flowers.size(); i++)
+						{
+								string name = Search::search <string> ::toLower(flowers[i].name);
+								if (name.find(s) != string::npos)
+										flowerSearch.push_back(flowers[i]);
+						}
+
+						viewVector(flowerSearch);
+						system("pause");
+						break;
+				}
+
+				case 4:
+				{
+						vector <string> menuFiltr = { "МЕНЮ ФИЛЬТРАЦИИ",
+														 "1 - Цена от - до",
+														 "2 - Только со скидкой",
+														 "3 - Без скидки" };
+						vector <FlowerAdmin> flowerSearch;
+						bool fl = true;
+						while (fl)
+						{
+								int ch = menu_helper(menuFiltr);
+
+								switch (ch)
+								{
+								case 1:
+								{
+										int c1, c2;
+										while (true)
+										{
+												cout << "Введите минимальную цену - ";
+												c1 = input();
+												if (c1 < 0)
+												{
+														cout << "Цена не может быть отрицательной. Пожалуйста, повторите попытку" << endl << endl;
+														continue;
+												}
+												break;
+										}
+										while (true)
+										{
+												cout << "Введите максимальную цену - ";
+												c2 = input();
+												if (c2 < 0)
+												{
+														cout << "Цена не может быть отрицательной. Пожалуйста, повторите попытку" << endl << endl;
+														continue;
+												}
+												break;
+										}
+
+										for (int i = 0; i < flowers.size(); i++)
+										{
+												if (flowers[i].price >= c1 && flowers[i].price <= c2)
+														flowerSearch.push_back(flowers[i]);
+										}
+										viewVector(flowerSearch);
+										system("pause");
+										break;
+								}
+
+								case 2:
+								{
+										for (int i = 0; i < flowers.size(); i++)
+										{
+												if (flowers[i].sale > 0)
+														flowerSearch.push_back(flowers[i]);
+										}
+										viewVector(flowerSearch);
+										system("pause");
+										break;
+								}
+
+								case 3:
+								{
+										for (int i = 0; i < flowers.size(); i++)
+										{
+												if (flowers[i].sale == 0)
+														flowerSearch.push_back(flowers[i]);
+										}
+										viewVector(flowerSearch);
+										system("pause");
+										break;
+								}
+
+								default:
+										fl = false;
+								}
+						}
+
+
+						
+						break;
+				}
+
+				default:
+						return;
+				}
+		}
 }
