@@ -5,8 +5,24 @@ void authentification(map <string, Account>& accounts, map <string, User>& users
 {
 		string login, password;
 
-		cout << "Введите логин - ";
-		getline(cin, login);
+
+		while (true)
+		{
+				cout << "Введите логин - ";
+				getline(cin, login);
+				try
+				{
+						if (login.size() == 0)
+								throw exception("Логин не может быть пустой");
+						break;
+				}
+				catch (const exception& ex)
+				{
+						cout << ex.what() << endl;
+						continue;
+				}
+		}
+		
 		cout << "Введите пароль - ";
 		char c;
 		while (true)
@@ -73,7 +89,7 @@ void authentification(map <string, Account>& accounts, map <string, User>& users
 						}
 						else
 						{
-								menu_seller();
+								menu_seller(flowers);
 								return;
 						}
 				}
@@ -100,14 +116,28 @@ void user_registration(map <string, User>& users)
 
 				cout << "------Добро пожаловать в меню регистрации------" << endl << endl;
 
-				cout << "Как вас зовут? - ";
-				getline(cin, name);
+				while(true)
+				{
+						cout << "Как вас зовут? - ";
+						getline(cin, name);
+						if (name.size() == 0)
+						{
+								cout << "Имя не может быть пустым. Повторите попытку" << endl;
+								continue;
+						}
+						break;
+				}
 
 				while (true)
 				{
 						login = "";
 						cout << "Придумайте логин - ";
 						getline(cin, login);
+						if (login.size() == 0)
+						{
+								cout << "Логин не может быть пустым. Повторите попытку" << endl;
+								continue;
+						}
 						map <string, User> ::iterator it;
 						it = users.find(login);
 						if (it != users.end())
@@ -124,6 +154,11 @@ void user_registration(map <string, User>& users)
 						password = "";
 						cout << "Придумайте пароль (минимум 5 символов) - ";
 						getline(cin, password);
+						if (password.size() == 0)
+						{
+								cout << "Пароль не может быть пустым. Повторите попытку" << endl;
+								continue;
+						}
 						if (password.size() < 5)
 						{
 								cout << "Ваш пароль слишком короткий. Попробуйте еще раз, используя минимум 5 символов." << endl;

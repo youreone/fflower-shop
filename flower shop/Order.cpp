@@ -2,15 +2,7 @@
 #include "Order.h"
 void returnTime(int& day, int& month, int& year);
 int input();
-//void ReturnTime(int& day, int& month, int& year)
-//{
-//		time_t now = time(0);
-//		tm* ltm = localtime(&now);
-//
-//		year = 1900 + ltm->tm_year;
-//		month = 1 + ltm->tm_mon;
-//		day = ltm->tm_mday;
-//}
+
 
 Order::Order()
 {
@@ -225,9 +217,11 @@ int Check::returnID()
 		return this->ID;
 }
 
-void checkOut(Check& check)
+void checkOut(Check& check, int number)
 {
-		int nameSize;
+		int nameSize = 8;
+		check.summaFull = 0;
+		check.saleFull;
 		for (int i = 0; i < check.cart.size(); i++)
 		{
 				nameSize = max(nameSize, (int)(check.cart[i].name.size()));
@@ -235,6 +229,9 @@ void checkOut(Check& check)
 				check.saleFull += check.cart[i].price * check.cart[i].count * check.cart[i].sale;
 		}
 
+
+		cout << "######" << endl;
+		cout << "# " << number <<". #" << endl;
 		cout << setfill('#') << setw(71 + nameSize) << "" << setfill(' ') << endl;
 		cout << "|----|-" << setfill('-') << setw(nameSize) << "" << "-|-----------|------------|---------------|-----------------|  #" << setfill(' ') << endl;
 		cout << "|    | " << setw(nameSize) << "Название" << " | Стоимость | Количество | Скидка (руб.) | Цена со скидкой |  #" << endl;

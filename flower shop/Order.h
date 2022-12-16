@@ -35,6 +35,8 @@ public:
 		friend ifstream& operator>>(ifstream& in, Check& check);
 		bool returnPurchase();
 		int returnID();
-		friend void checkOut(Check& check);
+		friend void checkOut(Check& check, int number);
+		friend Check placeOrder(shared_ptr <Check> ptr, map <string, FlowerAdmin>& flowers);
+		friend void Stat();
 };
 

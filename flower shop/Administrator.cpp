@@ -1,5 +1,48 @@
 #include "Administrator.h"
 
+void Stat();
+
+class Flow
+{
+		string name;
+public:
+		class Money
+		{
+				float expenses, parishes;
+		public:
+				Money()
+				{
+						this->expenses = 0;
+						this->parishes = 0;
+				}
+				friend void Stat();
+				void setExp(float expenses)
+				{
+						this->expenses += expenses;
+				}
+				void setPar(float parishes)
+				{
+						this->parishes += parishes;
+				}
+		};
+		Money money;
+		
+		Flow(string name)
+		{
+				this->name = name;
+		}
+		void setExp(float expenses)
+		{
+				this->money.setExp(expenses);
+		}
+
+		void setPar(float parishes)
+		{
+				this->money.setPar(parishes);
+		}
+		friend void Stat();
+};
+
 void menu_admin(map <string, Account>& accounts, map <string, User>& users, map <string, FlowerAdmin>& flowers, string login)
 {
 		vector <string> menu = { "МЕНЮ АДМИНИСТРАТОРА", 
@@ -24,6 +67,8 @@ void menu_admin(map <string, Account>& accounts, map <string, User>& users, map 
 						menu_flowerManagement(flowers);
 						break;
 				case 4:
+						Stat();
+						system("pause");
 						break;
 				case 5:
 						return;
@@ -90,7 +135,11 @@ void menu_accountsManagement(map<string, Account>& accounts, string login)
 										name = "";
 										cout << "Введите ФИО (не более 50 символов) - ";
 										getline(cin, name);
-
+										if (name.size() == 0)
+										{
+												cout << "Имя не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
 										if (name.size() > 50)
 										{
 												cout << "Имя работника слишком длинное. Пожалуйста, используйте не более 50 символов." << endl;
@@ -105,7 +154,11 @@ void menu_accountsManagement(map<string, Account>& accounts, string login)
 										login = "";
 										cout << "Введите логин (не более 20 символов) - ";
 										getline(cin, login);
-
+										if (login.size() == 0)
+										{
+												cout << "Логин не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
 										map <string, Account> ::iterator it;
 										it = accounts.find(login);
 										if (it != accounts.end())
@@ -125,6 +178,11 @@ void menu_accountsManagement(map<string, Account>& accounts, string login)
 										password = "";
 										cout << "Введите пароль (минимум 5 символов) - ";
 										getline(cin, password);
+										if (password.size() == 0)
+										{
+												cout << "Пароль не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
 										if (password.size() < 5)
 										{
 												cout << "Ваш пароль слишком короткий. Попробуйте еще раз, используя минимум 5 символов." << endl;
@@ -523,8 +581,22 @@ string Editflower(map<string, FlowerAdmin>& flowers, map<string, FlowerAdmin>::i
 						while (true)
 						{
 								string name;
-								cout << "Введите новое название - ";
-								getline(cin, name);
+								while(true)
+								{
+										cout << "Введите новое название - ";
+										getline(cin, name);
+										if (name.size() == 0)
+										{
+												cout << "Название не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
+										if (name.size() == 0)
+										{
+												cout << "Название не может быть пустым. Повторите попытку" << endl;
+												continue;
+										}
+										break;
+								}
 
 								map <string, FlowerAdmin>::iterator it = flowers.find(name);
 								if (it != flowers.end())
@@ -681,8 +753,17 @@ void addFlower(map<string, FlowerAdmin>& flowers)
 				case 2:
 				{
 						string name;
-						cout << endl << "Введите название товара - ";
-						getline(cin, name);
+						while(true)
+						{
+								cout << endl << "Введите название товара - ";
+								getline(cin, name);
+								if (name.size() == 0)
+								{
+										cout << "Название не может быть пустым. Повторите попытку" << endl;
+										continue;
+								}
+								break;
+						}
 						if (name[0] >= 'a' && name[0] <= 'z')
 								name[0] = name[0] + ('Z' - 'z');
 						if (name[0] >= 'а' && name[0] <= 'я')
@@ -761,4 +842,170 @@ void addFlower(map<string, FlowerAdmin>& flowers)
 				}
 		}
 
+}
+
+void Stat()
+{
+		vector <Check> checks;
+		map <string, Flow> flowers;
+		map <string, float> topPrice;
+		map <string, int> topCount;
+		pair <string, int> cnt;
+		pair <string, float> pr;
+
+		cnt.second = 0;
+		pr.second = 0;
+
+		ifstream in("checks", ios::binary);
+		if (!in.is_open())
+		{
+				in.close();
+				ofstream out("checks", ios::binary | ios::app);
+				out.close();
+				ifstream in("checks", ios::binary);
+		}
+
+		while (true)
+		{
+				Check check;
+				in >> check;
+				if (in.eof())
+						break;
+				if (check.returnPurchase())
+						checks.push_back(check);
+		}
+		in.close();
+
+		for (int i = 0; i < checks.size(); i++)
+		{
+				for (int j = 0; j < checks[i].cart.size(); j++)
+				{
+						if (flowers.find(checks[i].cart[j].name) == flowers.end())
+						{
+								Flow flow(checks[i].cart[j].name);
+								flowers.insert(make_pair(checks[i].cart[j].name, flow));
+						}
+						flowers.find(checks[i].cart[j].name)->second.setPar(checks[i].cart[j].price * checks[i].cart[j].count - checks[i].cart[j].price * checks[i].cart[j].count * checks[i].cart[j].sale);
+
+						if (topCount.find(checks[i].cart[j].name) == topCount.end())
+						{
+								topCount.insert(make_pair(checks[i].cart[j].name, 0));
+						}
+						topCount.find(checks[i].cart[j].name)->second += checks[i].cart[j].count;
+				}
+		}
+
+		float price, Fullexpenses = 0, fullParishes = 0;
+		int count;
+		string name;
+		in.open("expenses", ios::binary);
+		while (true)
+		{
+				in.read((char*)&count, sizeof(count));
+				if (in.eof())
+						break;
+				in.read((char*)&price, sizeof(price));
+
+				size_t len;
+				char* buf;
+
+				in.read((char*)&len, sizeof(len));
+				buf = new char[len];
+				in.read(buf, len);
+				name = buf;                              //считывание имени
+				delete[] buf;
+
+				if (flowers.find(name) == flowers.end())
+				{
+						Flow flow(name);
+						flowers.insert(make_pair(name, flow));
+				}
+
+				flowers.find(name)->second.setExp(count * price);
+		}
+
+		in.close();
+
+		int nameSize = 8;
+		for (map <string, Flow>::iterator it = flowers.begin(); it != flowers.end(); ++it)
+		{
+				nameSize = max(nameSize, it->second.name.size());
+		}
+
+		cout << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
+		cout << "| " << setw(nameSize) << "Название" <<         " |   Расход   |   Приход    |" << endl;
+		cout << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
+
+
+		for (map <string, Flow>::iterator it = flowers.begin(); it != flowers.end(); ++it)
+		{
+				Fullexpenses += it->second.money.expenses;
+				fullParishes += it->second.money.parishes;
+
+				if (topPrice.find(it->first) == topPrice.end())
+				{
+						topPrice.insert(make_pair(it->first, 0));
+				}
+				topPrice.find(it->first)->second += it->second.money.parishes;
+
+				cout << "| " << setw(nameSize) << it->second.name << " | " << fixed << setprecision(2) << setw(10) << it->second.money.expenses << " | " << fixed << setprecision(2) << setw(11) << it->second.money.parishes << " |" << endl;
+				cout << "|-" << setfill('-') << setw(nameSize) << "" << " |------------|-------------|" << setfill(' ') << endl;
+		}
+		cout << endl << "Вы заработали " << fullParishes << "р." << endl;
+		cout << "Вы потратили " << Fullexpenses << "р." << endl << endl;
+
+		for (map <string, int>::iterator it = topCount.begin(); it != topCount.end(); ++it)
+		{
+				if (it->second > cnt.second)
+				{
+						cnt.first = it->first;
+						cnt.second = it->second;
+				}
+		}
+
+		for (map <string, float>::iterator it = topPrice.begin(); it != topPrice.end(); ++it)
+		{
+				if (it->second > pr.second)
+				{
+						pr.first = it->first;
+						pr.second = it->second;
+				}
+		}
+
+		if (cnt.first.size() != 0)
+				cout << "Самый продаваемый товар - " << cnt.first << endl;
+		if (pr.first.size() != 0)
+				cout << "Самый прибыльный товар - " << pr.first << endl;
+		if (fullParishes < Fullexpenses)
+				cout << endl << "Вы уходите в минус. Такими темпами вы обанкротитесь" << endl;
+		else
+				cout << endl << "Вы выходите в плюс. Поздравляю" << endl;
+
+
+		ofstream out ("statistic.txt", ios::trunc);
+
+		out << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
+		out << "| " << setw(nameSize) << "Название" << " |   Расход   |   Приход    |" << endl;
+		out << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
+
+		for (map <string, Flow>::iterator it = flowers.begin(); it != flowers.end(); ++it)
+		{
+				out << "| " << setw(nameSize) << it->second.name << " | " << fixed << setprecision(2) << setw(10) << it->second.money.expenses << " | " << fixed << setprecision(2) << setw(11) << it->second.money.parishes << " |" << endl;
+				out << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
+		}
+		out << endl << "Вы заработали " << fullParishes << "р." << endl;
+		out << "Вы потратили " << Fullexpenses << "р." << endl << endl;
+
+		if (cnt.first.size() != 0)
+				out << "Самый продаваемый товар - " << cnt.first << endl;
+		if (pr.first.size() != 0)
+				out << "Самый прибыльный товар - " << pr.first << endl;
+
+		if (fullParishes < Fullexpenses)
+				out << endl << "Вы уходите в минус. Такими темпами вы обанкротитесь" << endl;
+		else
+				out << endl << "Вы выходите в плюс. Поздравляю" << endl;
+
+		out.close();
+		return;
 }

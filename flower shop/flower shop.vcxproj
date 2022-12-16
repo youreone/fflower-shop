@@ -135,6 +135,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="menu_helper.cpp" />
     <ClCompile Include="Order.cpp" />
+    <ClCompile Include="search.cpp" />
     <ClCompile Include="Seller.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +146,7 @@
     <ClInclude Include="Flower.h" />
     <ClInclude Include="menu_helper.h" />
     <ClInclude Include="Order.h" />
+    <ClInclude Include="search.h" />
     <ClInclude Include="Seller.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
