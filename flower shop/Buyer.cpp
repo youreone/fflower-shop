@@ -327,30 +327,138 @@ void viewFlowersWithSort(map <string, FlowerAdmin> fl)
 
 				case 3:
 				{
+						vector <string> menuSearch = { "МЕНЮ ПОИСКА",
+														 "1 - По названию",
+														 "2 - По дате" };
+
 						vector <FlowerAdmin> flowerSearch;
 						string s;
-						while (true)
+
+						bool flag = true;
+						while (flag)
 						{
-								cout << "Введите искомое название - ";
-								getline(cin, s);
-								if (s.size() == 0)
+								int chh = menu_helper(menuSearch);
+
+								switch (chh)
 								{
-										cout << "Название не может быть пустым." << endl << endl;
-										continue;
+								case 1:
+								{
+										while (true)
+										{
+												cout << "Введите искомое название - ";
+												getline(cin, s);
+												if (s.size() == 0)
+												{
+														cout << "Название не может быть пустым." << endl << endl;
+														continue;
+												}
+												break;
+										}
+
+										s = Search::search <string>::toLower(s);
+										for (int i = 0; i < flowers.size(); i++)
+										{
+												string name = Search::search <string> ::toLower(flowers[i].name);
+												if (name.find(s) != string::npos)
+														flowerSearch.push_back(flowers[i]);
+										}
+
+										viewVector(flowerSearch);
+										flowerSearch.clear();
+										system("pause");
+										break;
 								}
-								break;
+								
+								case 2:
+								{
+										string time;
+										int day, month, year;
+
+										while (true)
+										{
+												time = "";
+												cout << "Введите дату в формате ДД.ММ.ГГГГ - ";
+
+												char c;
+												while (true)
+												{
+														c = _getch();
+														if (c == 8)
+														{
+																if (time.size() == 0)
+																		continue;
+																if (time.size() == 2 || time.size() == 4)
+																{
+																		cout << "\b \b";
+																		cout << "\b \b";
+																		time.erase(time.size() - 1, 1);
+																		continue;
+																}
+																cout << "\b \b";
+																time.erase(time.size() - 1, 1);
+																continue;
+														}
+														if (c == '\r')
+																if (time.size() == 8)
+																		break;
+														if (c < '0' || c > '9')
+																continue;
+														if (time.size() == 8)
+																continue;
+														time += c;
+														cout << c;
+														if (time.size() == 2 || time.size() == 4)
+																cout << '.';
+												}
+
+												day = (time[0] - '0') * 10 + (time[1] - '0');
+												month = (time[2] - '0') * 10 + (time[3] - '0');
+												year = (time[4] - '0') * 1000 + (time[5] - '0') * 100 + (time[6] - '0') * 10 + (time[7] - '0');
+												if (day == 0 || day > 31 || month == 0 || month > 12 || year < 2022)
+												{
+														cout << endl << "Ошибка. Невозможная дата. Попробуйте еще раз." << endl << endl;
+														continue;
+												}
+
+												if ((month == 2 || month == 4 || month == 6 || month == 9 || month == 11) && day == 31)
+												{
+														cout << endl << "Ошибка. Невозможная дата. Попробуйте еще раз." << endl << endl;
+														continue;
+												}
+
+												if (month == 2 && day > 29)
+												{
+														cout << endl << "Ошибка. Невозможная дата. Попробуйте еще раз." << endl << endl;
+														continue;
+												}
+
+												if (!(year % 4 == 0 && year % 400 == 0 && year % 100 != 0) && month == 2 && day == 29)
+												{
+														cout << endl << "Ошибка. Невозможная дата (29 февраля в невисокосном году). Попробуйте еще раз." << endl << endl;
+														continue;
+												}
+
+												cout << endl << endl;
+												break;
+										}
+
+										for (int i = 0; i < flowers.size(); i++)
+										{
+												if(flowers[i].deliveryDay == day && flowers[i].deliveryMonth == month && flowers[i].deliveryYear == year)
+														flowerSearch.push_back(flowers[i]);
+										}
+
+										viewVector(flowerSearch);
+										flowerSearch.clear();
+										system("pause");
+										break;
+								}
+
+								default:
+										flag = false;
+								}
 						}
 
-						s = Search::search <string>::toLower(s);
-						for (int i = 0; i < flowers.size(); i++)
-						{
-								string name = Search::search <string> ::toLower(flowers[i].name);
-								if (name.find(s) != string::npos)
-										flowerSearch.push_back(flowers[i]);
-						}
-
-						viewVector(flowerSearch);
-						system("pause");
 						break;
 				}
 
@@ -359,7 +467,8 @@ void viewFlowersWithSort(map <string, FlowerAdmin> fl)
 						vector <string> menuFiltr = { "МЕНЮ ФИЛЬТРАЦИИ",
 														 "1 - Цена от - до",
 														 "2 - Только со скидкой",
-														 "3 - Без скидки" };
+														 "3 - Без скидки",
+														 "4 - По тексту"};
 						vector <FlowerAdmin> flowerSearch;
 						bool fl = true;
 						while (fl)
@@ -400,6 +509,7 @@ void viewFlowersWithSort(map <string, FlowerAdmin> fl)
 														flowerSearch.push_back(flowers[i]);
 										}
 										viewVector(flowerSearch);
+										flowerSearch.clear();
 										system("pause");
 										break;
 								}
@@ -412,6 +522,7 @@ void viewFlowersWithSort(map <string, FlowerAdmin> fl)
 														flowerSearch.push_back(flowers[i]);
 										}
 										viewVector(flowerSearch);
+										flowerSearch.clear();
 										system("pause");
 										break;
 								}
@@ -423,6 +534,36 @@ void viewFlowersWithSort(map <string, FlowerAdmin> fl)
 												if (flowers[i].sale == 0)
 														flowerSearch.push_back(flowers[i]);
 										}
+										viewVector(flowerSearch);
+										flowerSearch.clear();
+										system("pause");
+										break;
+								}
+
+								case 4:
+								{
+										vector <FlowerAdmin> flowerSearch;
+										string s;
+										while (true)
+										{
+												cout << "Введите искомую часть текста - ";
+												getline(cin, s);
+												if (s.size() == 0)
+												{
+														cout << "Название не может быть пустым." << endl << endl;
+														continue;
+												}
+												break;
+										}
+
+										s = Search::search <string>::toLower(s);
+										for (int i = 0; i < flowers.size(); i++)
+										{
+												string name = Search::search <string> ::toLower(flowers[i].name);
+												if (name.find(s) != string::npos)
+														flowerSearch.push_back(flowers[i]);
+										}
+
 										viewVector(flowerSearch);
 										system("pause");
 										break;

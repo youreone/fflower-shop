@@ -4,23 +4,43 @@ void Stat();
 
 class Flow
 {
-public:
 		string name;
-		float expenses, parishes;
+public:
+		class Money
+		{
+				float expenses, parishes;
+		public:
+				Money()
+				{
+						this->expenses = 0;
+						this->parishes = 0;
+				}
+				friend void Stat();
+				void setExp(float expenses)
+				{
+						this->expenses += expenses;
+				}
+				void setPar(float parishes)
+				{
+						this->parishes += parishes;
+				}
+		};
+		Money money;
+		
 		Flow(string name)
 		{
 				this->name = name;
-				this->expenses = 0;
-				this->parishes = 0;
 		}
 		void setExp(float expenses)
 		{
-				this->expenses += expenses;
+				this->money.setExp(expenses);
 		}
+
 		void setPar(float parishes)
 		{
-				this->parishes += parishes;
+				this->money.setPar(parishes);
 		}
+		friend void Stat();
 };
 
 void menu_admin(map <string, Account>& accounts, map <string, User>& users, map <string, FlowerAdmin>& flowers, string login)
@@ -828,6 +848,14 @@ void Stat()
 {
 		vector <Check> checks;
 		map <string, Flow> flowers;
+		map <string, float> topPrice;
+		map <string, int> topCount;
+		pair <string, int> cnt;
+		pair <string, float> pr;
+
+		cnt.second = 0;
+		pr.second = 0;
+
 		ifstream in("checks", ios::binary);
 		if (!in.is_open())
 		{
@@ -858,6 +886,12 @@ void Stat()
 								flowers.insert(make_pair(checks[i].cart[j].name, flow));
 						}
 						flowers.find(checks[i].cart[j].name)->second.setPar(checks[i].cart[j].price * checks[i].cart[j].count - checks[i].cart[j].price * checks[i].cart[j].count * checks[i].cart[j].sale);
+
+						if (topCount.find(checks[i].cart[j].name) == topCount.end())
+						{
+								topCount.insert(make_pair(checks[i].cart[j].name, 0));
+						}
+						topCount.find(checks[i].cart[j].name)->second += checks[i].cart[j].count;
 				}
 		}
 
@@ -905,28 +939,68 @@ void Stat()
 
 		for (map <string, Flow>::iterator it = flowers.begin(); it != flowers.end(); ++it)
 		{
-				Fullexpenses += it->second.expenses;
-				fullParishes += it->second.parishes;
+				Fullexpenses += it->second.money.expenses;
+				fullParishes += it->second.money.parishes;
 
-				cout << "| " << setw(nameSize) << it->second.name << " | " << fixed << setprecision(2) << setw(10) << it->second.expenses << " | " << fixed << setprecision(2) << setw(11) << it->second.parishes << " |" << endl;
+				if (topPrice.find(it->first) == topPrice.end())
+				{
+						topPrice.insert(make_pair(it->first, 0));
+				}
+				topPrice.find(it->first)->second += it->second.money.parishes;
+
+				cout << "| " << setw(nameSize) << it->second.name << " | " << fixed << setprecision(2) << setw(10) << it->second.money.expenses << " | " << fixed << setprecision(2) << setw(11) << it->second.money.parishes << " |" << endl;
 				cout << "|-" << setfill('-') << setw(nameSize) << "" << " |------------|-------------|" << setfill(' ') << endl;
 		}
 		cout << endl << "Вы заработали " << fullParishes << "р." << endl;
-		cout << "Вы потратили " << Fullexpenses << "р." << endl;
+		cout << "Вы потратили " << Fullexpenses << "р." << endl << endl;
+
+		for (map <string, int>::iterator it = topCount.begin(); it != topCount.end(); ++it)
+		{
+				if (it->second > cnt.second)
+				{
+						cnt.first = it->first;
+						cnt.second = it->second;
+				}
+		}
+
+		for (map <string, float>::iterator it = topPrice.begin(); it != topPrice.end(); ++it)
+		{
+				if (it->second > pr.second)
+				{
+						pr.first = it->first;
+						pr.second = it->second;
+				}
+		}
+
+		if (cnt.first.size() != 0)
+				cout << "Самый продаваемый товар - " << cnt.first << endl;
+		if (pr.first.size() != 0)
+				cout << "Самый прибыльный товар - " << pr.first << endl;
 		if (fullParishes < Fullexpenses)
-				cout << endl << "Вы уходите в минус. Такими темпами вы обанкротитесь" << endl << endl;
+				cout << endl << "Вы уходите в минус. Такими темпами вы обанкротитесь" << endl;
 		else
-				cout << endl << "Вы выходите в плюс. Поздравляю" << endl << endl;
+				cout << endl << "Вы выходите в плюс. Поздравляю" << endl;
 
 
 		ofstream out ("statistic.txt", ios::trunc);
+
+		out << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
+		out << "| " << setw(nameSize) << "Название" << " |   Расход   |   Приход    |" << endl;
+		out << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
+
 		for (map <string, Flow>::iterator it = flowers.begin(); it != flowers.end(); ++it)
 		{
-				out << "| " << setw(nameSize) << it->second.name << " | " << fixed << setprecision(2) << setw(10) << it->second.expenses << " | " << fixed << setprecision(2) << setw(11) << it->second.parishes << " |" << endl;
+				out << "| " << setw(nameSize) << it->second.name << " | " << fixed << setprecision(2) << setw(10) << it->second.money.expenses << " | " << fixed << setprecision(2) << setw(11) << it->second.money.parishes << " |" << endl;
 				out << "|-" << setfill('-') << setw(nameSize) << "" << "-|------------|-------------|" << setfill(' ') << endl;
 		}
 		out << endl << "Вы заработали " << fullParishes << "р." << endl;
-		out << "Вы потратили " << Fullexpenses << "р." << endl;
+		out << "Вы потратили " << Fullexpenses << "р." << endl << endl;
+
+		if (cnt.first.size() != 0)
+				out << "Самый продаваемый товар - " << cnt.first << endl;
+		if (pr.first.size() != 0)
+				out << "Самый прибыльный товар - " << pr.first << endl;
+
 		if (fullParishes < Fullexpenses)
 				out << endl << "Вы уходите в минус. Такими темпами вы обанкротитесь" << endl;
 		else
